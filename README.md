@@ -1,1 +1,1 @@
-# kluff-go
+# kluff-go-sdk
