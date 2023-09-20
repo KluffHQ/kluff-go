@@ -1,53 +1,30 @@
-package helloworld
+package main
 
 import (
-	"context"
-	"log"
-
+	"github.com/kluff-com/kluff-go/data/helloworld"
+	"github.com/kluff-com/kluff-go/pkg/internals"
 	"google.golang.org/grpc"
-
-	helloWorldApi "github.com/kluff-com/kluff-go/pkg/api/helloworld"
 )
 
-type HelloWorldClient interface {
-	HelloWorld(context.Context) (string, error)
+type Config struct {
+	APIKey string
 }
 
-type helloWorldClient struct {
-	conn *grpc.ClientConn
-}
-
-func NewHelloWorldClient(address string) (HelloWorldClient, error) {
-	conn, err := grpc.Dial(address, grpc.WithInsecure())
+func New(config Config) (kluffSDK, error) {
+	conn, err := grpc.Dial("localhost:9091")
 	if err != nil {
-		return nil, err
+		return kluffSDK{}, err
 	}
 
-	return &helloWorldClient{
-		conn: conn,
-	}, nil
-}
-
-func (c *helloWorldClient) HelloWorld(ctx context.Context) (string, error) {
-	req := &helloWorldApi.HelloWorldRequest{}
-	client := helloWorldApi.NewHelloWorldClient(c.conn)
-
-	// Call the Add RPC.
-	resp, err := client.HelloWorld(context.Background(), req)
-	if err != nil {
-		log.Fatalf("could not call HelloWorld RPC: %v", err)
-		return "", err
-	}
-	return resp.Msg, nil
-}
-
-// This is for demo purpose to test grpc communication with apps-core repo
-// This function will be used by apps backend as sdk.
-func HelloWorldDemo() (string, error) {
-	client, err := NewHelloWorldClient("localhost:9091")
-	if err != nil {
-		return "", err
+	sdk := kluffSDK{
+		db:         internals.NewDBInteractor(conn),
+		helloworld: helloworld.NewHelloWorldClient(conn),
 	}
 
-	return client.HelloWorld(context.Background())
+	return sdk, nil
+}
+
+type kluffSDK struct {
+	db         internals.Interactor
+	helloworld helloworld.HelloWorldClient
 }
