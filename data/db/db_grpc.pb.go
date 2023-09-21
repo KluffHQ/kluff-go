@@ -22,13 +22,15 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DbClient interface {
+	SendPing(ctx context.Context, in *Ping, opts ...grpc.CallOption) (*Pong, error)
 	CreateObject(ctx context.Context, in *Object, opts ...grpc.CallOption) (*Empty, error)
 	AddObjectFields(ctx context.Context, in *ObjectFieldParam, opts ...grpc.CallOption) (*Data, error)
 	UpdateObjectMeta(ctx context.Context, in *ObjectMeta, opts ...grpc.CallOption) (*Empty, error)
 	DeleteObject(ctx context.Context, in *String, opts ...grpc.CallOption) (*Empty, error)
 	DeleteFields(ctx context.Context, in *DeleteField, opts ...grpc.CallOption) (*Empty, error)
 	UpdateObjectField(ctx context.Context, in *UpdateField, opts ...grpc.CallOption) (*Empty, error)
-	GetObjectSchema(ctx context.Context, in *ObjectQuery, opts ...grpc.CallOption) (*Data, error)
+	GetObjectSchema(ctx context.Context, in *String, opts ...grpc.CallOption) (*Data, error)
+	ObjectExists(ctx context.Context, in *String, opts ...grpc.CallOption) (*Bool, error)
 	CreateRecord(ctx context.Context, in *CreateRecordParam, opts ...grpc.CallOption) (*Data, error)
 	GetRecord(ctx context.Context, in *RecordQuery, opts ...grpc.CallOption) (*Data, error)
 	UpdateARecord(ctx context.Context, in *UpdateRecord, opts ...grpc.CallOption) (*Empty, error)
@@ -43,6 +45,15 @@ type dbClient struct {
 
 func NewDbClient(cc grpc.ClientConnInterface) DbClient {
 	return &dbClient{cc}
+}
+
+func (c *dbClient) SendPing(ctx context.Context, in *Ping, opts ...grpc.CallOption) (*Pong, error) {
+	out := new(Pong)
+	err := c.cc.Invoke(ctx, "/db.db/SendPing", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *dbClient) CreateObject(ctx context.Context, in *Object, opts ...grpc.CallOption) (*Empty, error) {
@@ -99,9 +110,18 @@ func (c *dbClient) UpdateObjectField(ctx context.Context, in *UpdateField, opts 
 	return out, nil
 }
 
-func (c *dbClient) GetObjectSchema(ctx context.Context, in *ObjectQuery, opts ...grpc.CallOption) (*Data, error) {
+func (c *dbClient) GetObjectSchema(ctx context.Context, in *String, opts ...grpc.CallOption) (*Data, error) {
 	out := new(Data)
 	err := c.cc.Invoke(ctx, "/db.db/GetObjectSchema", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dbClient) ObjectExists(ctx context.Context, in *String, opts ...grpc.CallOption) (*Bool, error) {
+	out := new(Bool)
+	err := c.cc.Invoke(ctx, "/db.db/ObjectExists", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -166,13 +186,15 @@ func (c *dbClient) GetFields(ctx context.Context, in *String, opts ...grpc.CallO
 // All implementations must embed UnimplementedDbServer
 // for forward compatibility
 type DbServer interface {
+	SendPing(context.Context, *Ping) (*Pong, error)
 	CreateObject(context.Context, *Object) (*Empty, error)
 	AddObjectFields(context.Context, *ObjectFieldParam) (*Data, error)
 	UpdateObjectMeta(context.Context, *ObjectMeta) (*Empty, error)
 	DeleteObject(context.Context, *String) (*Empty, error)
 	DeleteFields(context.Context, *DeleteField) (*Empty, error)
 	UpdateObjectField(context.Context, *UpdateField) (*Empty, error)
-	GetObjectSchema(context.Context, *ObjectQuery) (*Data, error)
+	GetObjectSchema(context.Context, *String) (*Data, error)
+	ObjectExists(context.Context, *String) (*Bool, error)
 	CreateRecord(context.Context, *CreateRecordParam) (*Data, error)
 	GetRecord(context.Context, *RecordQuery) (*Data, error)
 	UpdateARecord(context.Context, *UpdateRecord) (*Empty, error)
@@ -186,6 +208,9 @@ type DbServer interface {
 type UnimplementedDbServer struct {
 }
 
+func (UnimplementedDbServer) SendPing(context.Context, *Ping) (*Pong, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SendPing not implemented")
+}
 func (UnimplementedDbServer) CreateObject(context.Context, *Object) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateObject not implemented")
 }
@@ -204,8 +229,11 @@ func (UnimplementedDbServer) DeleteFields(context.Context, *DeleteField) (*Empty
 func (UnimplementedDbServer) UpdateObjectField(context.Context, *UpdateField) (*Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateObjectField not implemented")
 }
-func (UnimplementedDbServer) GetObjectSchema(context.Context, *ObjectQuery) (*Data, error) {
+func (UnimplementedDbServer) GetObjectSchema(context.Context, *String) (*Data, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetObjectSchema not implemented")
+}
+func (UnimplementedDbServer) ObjectExists(context.Context, *String) (*Bool, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ObjectExists not implemented")
 }
 func (UnimplementedDbServer) CreateRecord(context.Context, *CreateRecordParam) (*Data, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateRecord not implemented")
@@ -236,6 +264,24 @@ type UnsafeDbServer interface {
 
 func RegisterDbServer(s grpc.ServiceRegistrar, srv DbServer) {
 	s.RegisterService(&Db_ServiceDesc, srv)
+}
+
+func _Db_SendPing_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Ping)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DbServer).SendPing(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/db.db/SendPing",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DbServer).SendPing(ctx, req.(*Ping))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _Db_CreateObject_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -347,7 +393,7 @@ func _Db_UpdateObjectField_Handler(srv interface{}, ctx context.Context, dec fun
 }
 
 func _Db_GetObjectSchema_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(ObjectQuery)
+	in := new(String)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -359,7 +405,25 @@ func _Db_GetObjectSchema_Handler(srv interface{}, ctx context.Context, dec func(
 		FullMethod: "/db.db/GetObjectSchema",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DbServer).GetObjectSchema(ctx, req.(*ObjectQuery))
+		return srv.(DbServer).GetObjectSchema(ctx, req.(*String))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Db_ObjectExists_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(String)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DbServer).ObjectExists(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/db.db/ObjectExists",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DbServer).ObjectExists(ctx, req.(*String))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -480,6 +544,10 @@ var Db_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*DbServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
+			MethodName: "SendPing",
+			Handler:    _Db_SendPing_Handler,
+		},
+		{
 			MethodName: "CreateObject",
 			Handler:    _Db_CreateObject_Handler,
 		},
@@ -506,6 +574,10 @@ var Db_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetObjectSchema",
 			Handler:    _Db_GetObjectSchema_Handler,
+		},
+		{
+			MethodName: "ObjectExists",
+			Handler:    _Db_ObjectExists_Handler,
 		},
 		{
 			MethodName: "CreateRecord",

@@ -39,6 +39,19 @@ func (i *Interactor) CreateObject(context context.Context, obj *db.Object) error
 	return err
 }
 
+func (i *Interactor) ObjectExists(context context.Context, apiName string) (bool, error) {
+	v, err := i.cl.ObjectExists(context, &db.String{Value: apiName})
+	if err != nil {
+		return false, err
+	}
+	return v.Value, nil
+}
+
+func (i *Interactor) SendPing(context context.Context, ping *db.Ping) error {
+	_, err := i.cl.SendPing(context, ping)
+	return err
+}
+
 func (i *Interactor) AddObjectFields(context context.Context, param *db.ObjectFieldParam) (map[string]any, error) {
 	data, err := i.cl.AddObjectFields(context, param)
 	if err != nil {
@@ -52,10 +65,12 @@ func (i *Interactor) UpdateObjectMeta(context context.Context, param *db.ObjectM
 	return err
 }
 
-func (i *Interactor) DeleteARecord(context context.Context, apiName string, recID int64) error {
+// FIXME: data returned by json.Marshal is `float64` regardless, passing record record["id"] as `recID` directly panics
+// unless you parse it as float64 and converting it to int64 to be parsed by the grpc
+func (i *Interactor) DeleteARecord(context context.Context, apiName string, recID float64) error {
 	_, err := i.cl.DeleteARecord(context, &db.DeleteRecord{
 		APIName:  apiName,
-		RecordID: recID,
+		RecordID: int64(recID),
 	})
 	return err
 }
@@ -83,8 +98,10 @@ func (i *Interactor) UpdateObjectField(context context.Context, apiName string, 
 	return err
 }
 
-func (i *Interactor) GetObjectSchema(context context.Context, q *db.ObjectQuery) (map[string]any, error) {
-	data, err := i.cl.GetObjectSchema(context, q)
+func (i *Interactor) GetObjectSchema(context context.Context, apiName string) (map[string]any, error) {
+	data, err := i.cl.GetObjectSchema(context, &db.String{
+		Value: apiName,
+	})
 	if err != nil {
 		return nil, err
 	}

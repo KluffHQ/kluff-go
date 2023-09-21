@@ -20,6 +20,82 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type Ping struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *Ping) Reset() {
+	*x = Ping{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_db_proto_msgTypes[0]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Ping) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Ping) ProtoMessage() {}
+
+func (x *Ping) ProtoReflect() protoreflect.Message {
+	mi := &file_db_proto_msgTypes[0]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Ping.ProtoReflect.Descriptor instead.
+func (*Ping) Descriptor() ([]byte, []int) {
+	return file_db_proto_rawDescGZIP(), []int{0}
+}
+
+type Pong struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+}
+
+func (x *Pong) Reset() {
+	*x = Pong{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_db_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Pong) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Pong) ProtoMessage() {}
+
+func (x *Pong) ProtoReflect() protoreflect.Message {
+	mi := &file_db_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Pong.ProtoReflect.Descriptor instead.
+func (*Pong) Descriptor() ([]byte, []int) {
+	return file_db_proto_rawDescGZIP(), []int{1}
+}
+
 type FieldsResult struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -31,7 +107,7 @@ type FieldsResult struct {
 func (x *FieldsResult) Reset() {
 	*x = FieldsResult{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[0]
+		mi := &file_db_proto_msgTypes[2]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -44,7 +120,7 @@ func (x *FieldsResult) String() string {
 func (*FieldsResult) ProtoMessage() {}
 
 func (x *FieldsResult) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[0]
+	mi := &file_db_proto_msgTypes[2]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +133,7 @@ func (x *FieldsResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldsResult.ProtoReflect.Descriptor instead.
 func (*FieldsResult) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{0}
+	return file_db_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *FieldsResult) GetFields() []*Field {
@@ -80,7 +156,7 @@ type CreateRecordParam struct {
 func (x *CreateRecordParam) Reset() {
 	*x = CreateRecordParam{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[1]
+		mi := &file_db_proto_msgTypes[3]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -93,7 +169,7 @@ func (x *CreateRecordParam) String() string {
 func (*CreateRecordParam) ProtoMessage() {}
 
 func (x *CreateRecordParam) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[1]
+	mi := &file_db_proto_msgTypes[3]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -106,7 +182,7 @@ func (x *CreateRecordParam) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateRecordParam.ProtoReflect.Descriptor instead.
 func (*CreateRecordParam) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{1}
+	return file_db_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *CreateRecordParam) GetAPIName() string {
@@ -143,7 +219,7 @@ type ObjectFieldParam struct {
 func (x *ObjectFieldParam) Reset() {
 	*x = ObjectFieldParam{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[2]
+		mi := &file_db_proto_msgTypes[4]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -156,7 +232,7 @@ func (x *ObjectFieldParam) String() string {
 func (*ObjectFieldParam) ProtoMessage() {}
 
 func (x *ObjectFieldParam) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[2]
+	mi := &file_db_proto_msgTypes[4]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -169,7 +245,7 @@ func (x *ObjectFieldParam) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectFieldParam.ProtoReflect.Descriptor instead.
 func (*ObjectFieldParam) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{2}
+	return file_db_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *ObjectFieldParam) GetFields() []*Field {
@@ -205,7 +281,7 @@ type DeleteRecord struct {
 func (x *DeleteRecord) Reset() {
 	*x = DeleteRecord{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[3]
+		mi := &file_db_proto_msgTypes[5]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -218,7 +294,7 @@ func (x *DeleteRecord) String() string {
 func (*DeleteRecord) ProtoMessage() {}
 
 func (x *DeleteRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[3]
+	mi := &file_db_proto_msgTypes[5]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -231,7 +307,7 @@ func (x *DeleteRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteRecord.ProtoReflect.Descriptor instead.
 func (*DeleteRecord) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{3}
+	return file_db_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *DeleteRecord) GetAPIName() string {
@@ -261,7 +337,7 @@ type UpdateRecord struct {
 func (x *UpdateRecord) Reset() {
 	*x = UpdateRecord{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[4]
+		mi := &file_db_proto_msgTypes[6]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -274,7 +350,7 @@ func (x *UpdateRecord) String() string {
 func (*UpdateRecord) ProtoMessage() {}
 
 func (x *UpdateRecord) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[4]
+	mi := &file_db_proto_msgTypes[6]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -287,7 +363,7 @@ func (x *UpdateRecord) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateRecord.ProtoReflect.Descriptor instead.
 func (*UpdateRecord) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{4}
+	return file_db_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *UpdateRecord) GetAPIName() string {
@@ -329,7 +405,7 @@ type RecordQuery struct {
 func (x *RecordQuery) Reset() {
 	*x = RecordQuery{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[5]
+		mi := &file_db_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -342,7 +418,7 @@ func (x *RecordQuery) String() string {
 func (*RecordQuery) ProtoMessage() {}
 
 func (x *RecordQuery) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[5]
+	mi := &file_db_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -355,7 +431,7 @@ func (x *RecordQuery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RecordQuery.ProtoReflect.Descriptor instead.
 func (*RecordQuery) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{5}
+	return file_db_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *RecordQuery) GetAPIName() string {
@@ -431,7 +507,7 @@ type ObjectQuery struct {
 func (x *ObjectQuery) Reset() {
 	*x = ObjectQuery{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[6]
+		mi := &file_db_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -444,7 +520,7 @@ func (x *ObjectQuery) String() string {
 func (*ObjectQuery) ProtoMessage() {}
 
 func (x *ObjectQuery) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[6]
+	mi := &file_db_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -457,7 +533,7 @@ func (x *ObjectQuery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectQuery.ProtoReflect.Descriptor instead.
 func (*ObjectQuery) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{6}
+	return file_db_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *ObjectQuery) GetSort() []*Sort {
@@ -521,7 +597,7 @@ type Sort struct {
 func (x *Sort) Reset() {
 	*x = Sort{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[7]
+		mi := &file_db_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -534,7 +610,7 @@ func (x *Sort) String() string {
 func (*Sort) ProtoMessage() {}
 
 func (x *Sort) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[7]
+	mi := &file_db_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -547,7 +623,7 @@ func (x *Sort) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Sort.ProtoReflect.Descriptor instead.
 func (*Sort) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{7}
+	return file_db_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *Sort) GetField() string {
@@ -578,7 +654,7 @@ type Filter struct {
 func (x *Filter) Reset() {
 	*x = Filter{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[8]
+		mi := &file_db_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -591,7 +667,7 @@ func (x *Filter) String() string {
 func (*Filter) ProtoMessage() {}
 
 func (x *Filter) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[8]
+	mi := &file_db_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -604,7 +680,7 @@ func (x *Filter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Filter.ProtoReflect.Descriptor instead.
 func (*Filter) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{8}
+	return file_db_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Filter) GetField() string {
@@ -652,7 +728,7 @@ type Join struct {
 func (x *Join) Reset() {
 	*x = Join{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[9]
+		mi := &file_db_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -665,7 +741,7 @@ func (x *Join) String() string {
 func (*Join) ProtoMessage() {}
 
 func (x *Join) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[9]
+	mi := &file_db_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -678,7 +754,7 @@ func (x *Join) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Join.ProtoReflect.Descriptor instead.
 func (*Join) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{9}
+	return file_db_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *Join) GetTableName() string {
@@ -741,7 +817,7 @@ type QueryField struct {
 func (x *QueryField) Reset() {
 	*x = QueryField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[10]
+		mi := &file_db_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -754,7 +830,7 @@ func (x *QueryField) String() string {
 func (*QueryField) ProtoMessage() {}
 
 func (x *QueryField) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[10]
+	mi := &file_db_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -767,7 +843,7 @@ func (x *QueryField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use QueryField.ProtoReflect.Descriptor instead.
 func (*QueryField) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{10}
+	return file_db_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *QueryField) GetName() string {
@@ -789,7 +865,7 @@ type UpdateField struct {
 func (x *UpdateField) Reset() {
 	*x = UpdateField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[11]
+		mi := &file_db_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -802,7 +878,7 @@ func (x *UpdateField) String() string {
 func (*UpdateField) ProtoMessage() {}
 
 func (x *UpdateField) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[11]
+	mi := &file_db_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -815,7 +891,7 @@ func (x *UpdateField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateField.ProtoReflect.Descriptor instead.
 func (*UpdateField) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{11}
+	return file_db_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *UpdateField) GetAPIName() string {
@@ -844,7 +920,7 @@ type FieldUpdate struct {
 func (x *FieldUpdate) Reset() {
 	*x = FieldUpdate{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[12]
+		mi := &file_db_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -857,7 +933,7 @@ func (x *FieldUpdate) String() string {
 func (*FieldUpdate) ProtoMessage() {}
 
 func (x *FieldUpdate) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[12]
+	mi := &file_db_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -870,7 +946,7 @@ func (x *FieldUpdate) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldUpdate.ProtoReflect.Descriptor instead.
 func (*FieldUpdate) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{12}
+	return file_db_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *FieldUpdate) GetOldField() string {
@@ -900,7 +976,7 @@ type ObjectField struct {
 func (x *ObjectField) Reset() {
 	*x = ObjectField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[13]
+		mi := &file_db_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -913,7 +989,7 @@ func (x *ObjectField) String() string {
 func (*ObjectField) ProtoMessage() {}
 
 func (x *ObjectField) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[13]
+	mi := &file_db_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -926,7 +1002,7 @@ func (x *ObjectField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectField.ProtoReflect.Descriptor instead.
 func (*ObjectField) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{13}
+	return file_db_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *ObjectField) GetFields() []*Field {
@@ -962,7 +1038,7 @@ type DeleteField struct {
 func (x *DeleteField) Reset() {
 	*x = DeleteField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[14]
+		mi := &file_db_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -975,7 +1051,7 @@ func (x *DeleteField) String() string {
 func (*DeleteField) ProtoMessage() {}
 
 func (x *DeleteField) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[14]
+	mi := &file_db_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -988,7 +1064,7 @@ func (x *DeleteField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteField.ProtoReflect.Descriptor instead.
 func (*DeleteField) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{14}
+	return file_db_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *DeleteField) GetFields() []string {
@@ -1030,7 +1106,7 @@ type ObjectMeta struct {
 func (x *ObjectMeta) Reset() {
 	*x = ObjectMeta{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[15]
+		mi := &file_db_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1043,7 +1119,7 @@ func (x *ObjectMeta) String() string {
 func (*ObjectMeta) ProtoMessage() {}
 
 func (x *ObjectMeta) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[15]
+	mi := &file_db_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1056,7 +1132,7 @@ func (x *ObjectMeta) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ObjectMeta.ProtoReflect.Descriptor instead.
 func (*ObjectMeta) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{15}
+	return file_db_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *ObjectMeta) GetAPIName() string {
@@ -1177,7 +1253,7 @@ type Object struct {
 func (x *Object) Reset() {
 	*x = Object{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[16]
+		mi := &file_db_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1190,7 +1266,7 @@ func (x *Object) String() string {
 func (*Object) ProtoMessage() {}
 
 func (x *Object) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[16]
+	mi := &file_db_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1203,7 +1279,7 @@ func (x *Object) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Object.ProtoReflect.Descriptor instead.
 func (*Object) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{16}
+	return file_db_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *Object) GetMeta() *ObjectMeta {
@@ -1240,7 +1316,7 @@ type LinkField struct {
 func (x *LinkField) Reset() {
 	*x = LinkField{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[17]
+		mi := &file_db_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1253,7 +1329,7 @@ func (x *LinkField) String() string {
 func (*LinkField) ProtoMessage() {}
 
 func (x *LinkField) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[17]
+	mi := &file_db_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1266,7 +1342,7 @@ func (x *LinkField) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use LinkField.ProtoReflect.Descriptor instead.
 func (*LinkField) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{17}
+	return file_db_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *LinkField) GetGroup() string {
@@ -1319,7 +1395,7 @@ type Field struct {
 func (x *Field) Reset() {
 	*x = Field{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[18]
+		mi := &file_db_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1332,7 +1408,7 @@ func (x *Field) String() string {
 func (*Field) ProtoMessage() {}
 
 func (x *Field) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[18]
+	mi := &file_db_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1345,7 +1421,7 @@ func (x *Field) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Field.ProtoReflect.Descriptor instead.
 func (*Field) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{18}
+	return file_db_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *Field) GetParent() string {
@@ -1485,7 +1561,7 @@ type String struct {
 func (x *String) Reset() {
 	*x = String{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[19]
+		mi := &file_db_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1498,7 +1574,7 @@ func (x *String) String() string {
 func (*String) ProtoMessage() {}
 
 func (x *String) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[19]
+	mi := &file_db_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1511,7 +1587,7 @@ func (x *String) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use String.ProtoReflect.Descriptor instead.
 func (*String) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{19}
+	return file_db_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *String) GetValue() string {
@@ -1532,7 +1608,7 @@ type Data struct {
 func (x *Data) Reset() {
 	*x = Data{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[20]
+		mi := &file_db_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1545,7 +1621,7 @@ func (x *Data) String() string {
 func (*Data) ProtoMessage() {}
 
 func (x *Data) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[20]
+	mi := &file_db_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1558,7 +1634,7 @@ func (x *Data) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Data.ProtoReflect.Descriptor instead.
 func (*Data) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{20}
+	return file_db_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *Data) GetResult() []byte {
@@ -1577,7 +1653,7 @@ type Empty struct {
 func (x *Empty) Reset() {
 	*x = Empty{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_db_proto_msgTypes[21]
+		mi := &file_db_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1590,7 +1666,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_db_proto_msgTypes[21]
+	mi := &file_db_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1603,13 +1679,61 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_db_proto_rawDescGZIP(), []int{21}
+	return file_db_proto_rawDescGZIP(), []int{23}
+}
+
+type Bool struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Value bool `protobuf:"varint,1,opt,name=Value,proto3" json:"Value,omitempty"`
+}
+
+func (x *Bool) Reset() {
+	*x = Bool{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_db_proto_msgTypes[24]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Bool) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Bool) ProtoMessage() {}
+
+func (x *Bool) ProtoReflect() protoreflect.Message {
+	mi := &file_db_proto_msgTypes[24]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Bool.ProtoReflect.Descriptor instead.
+func (*Bool) Descriptor() ([]byte, []int) {
+	return file_db_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *Bool) GetValue() bool {
+	if x != nil {
+		return x.Value
+	}
+	return false
 }
 
 var File_db_proto protoreflect.FileDescriptor
 
 var file_db_proto_rawDesc = []byte{
-	0x0a, 0x08, 0x64, 0x62, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x64, 0x62, 0x22, 0x31,
+	0x0a, 0x08, 0x64, 0x62, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x02, 0x64, 0x62, 0x22, 0x06,
+	0x0a, 0x04, 0x50, 0x69, 0x6e, 0x67, 0x22, 0x06, 0x0a, 0x04, 0x50, 0x6f, 0x6e, 0x67, 0x22, 0x31,
 	0x0a, 0x0c, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x52, 0x65, 0x73, 0x75, 0x6c, 0x74, 0x12, 0x21,
 	0x0a, 0x06, 0x66, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x18, 0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x09,
 	0x2e, 0x64, 0x62, 0x2e, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x52, 0x06, 0x66, 0x69, 0x65, 0x6c, 0x64,
@@ -1794,8 +1918,12 @@ var file_db_proto_rawDesc = []byte{
 	0x56, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x56, 0x61, 0x6c,
 	0x75, 0x65, 0x22, 0x1e, 0x0a, 0x04, 0x44, 0x61, 0x74, 0x61, 0x12, 0x16, 0x0a, 0x06, 0x52, 0x65,
 	0x73, 0x75, 0x6c, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x52, 0x65, 0x73, 0x75,
-	0x6c, 0x74, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x32, 0xdd, 0x04, 0x0a, 0x02,
-	0x64, 0x62, 0x12, 0x27, 0x0a, 0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65,
+	0x6c, 0x74, 0x22, 0x07, 0x0a, 0x05, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x1c, 0x0a, 0x04, 0x42,
+	0x6f, 0x6f, 0x6c, 0x12, 0x14, 0x0a, 0x05, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x05, 0x56, 0x61, 0x6c, 0x75, 0x65, 0x32, 0xa2, 0x05, 0x0a, 0x02, 0x64, 0x62,
+	0x12, 0x20, 0x0a, 0x08, 0x53, 0x65, 0x6e, 0x64, 0x50, 0x69, 0x6e, 0x67, 0x12, 0x08, 0x2e, 0x64,
+	0x62, 0x2e, 0x50, 0x69, 0x6e, 0x67, 0x1a, 0x08, 0x2e, 0x64, 0x62, 0x2e, 0x50, 0x6f, 0x6e, 0x67,
+	0x22, 0x00, 0x12, 0x27, 0x0a, 0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65,
 	0x63, 0x74, 0x12, 0x0a, 0x2e, 0x64, 0x62, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x1a, 0x09,
 	0x2e, 0x64, 0x62, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x33, 0x0a, 0x0f, 0x41,
 	0x64, 0x64, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x14,
@@ -1812,28 +1940,30 @@ var file_db_proto_rawDesc = []byte{
 	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x31, 0x0a, 0x11, 0x55, 0x70, 0x64, 0x61,
 	0x74, 0x65, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x12, 0x0f, 0x2e,
 	0x64, 0x62, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x46, 0x69, 0x65, 0x6c, 0x64, 0x1a, 0x09,
-	0x2e, 0x64, 0x62, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x2e, 0x0a, 0x0f, 0x47,
-	0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x12, 0x0f,
-	0x2e, 0x64, 0x62, 0x2e, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x51, 0x75, 0x65, 0x72, 0x79, 0x1a,
-	0x08, 0x2e, 0x64, 0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x12, 0x31, 0x0a, 0x0c, 0x43,
-	0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x15, 0x2e, 0x64, 0x62,
-	0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x50, 0x61, 0x72,
-	0x61, 0x6d, 0x1a, 0x08, 0x2e, 0x64, 0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x12, 0x28,
-	0x0a, 0x09, 0x47, 0x65, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x0f, 0x2e, 0x64, 0x62,
-	0x2e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x51, 0x75, 0x65, 0x72, 0x79, 0x1a, 0x08, 0x2e, 0x64,
-	0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x12, 0x2e, 0x0a, 0x0d, 0x55, 0x70, 0x64, 0x61,
-	0x74, 0x65, 0x41, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x10, 0x2e, 0x64, 0x62, 0x2e, 0x55,
-	0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x1a, 0x09, 0x2e, 0x64, 0x62,
-	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x2e, 0x0a, 0x0d, 0x44, 0x65, 0x6c, 0x65,
-	0x74, 0x65, 0x41, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x10, 0x2e, 0x64, 0x62, 0x2e, 0x44,
-	0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x1a, 0x09, 0x2e, 0x64, 0x62,
-	0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x2c, 0x0a, 0x0d, 0x47, 0x65, 0x74, 0x41,
-	0x6c, 0x6c, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x12, 0x0f, 0x2e, 0x64, 0x62, 0x2e, 0x52,
-	0x65, 0x63, 0x6f, 0x72, 0x64, 0x51, 0x75, 0x65, 0x72, 0x79, 0x1a, 0x08, 0x2e, 0x64, 0x62, 0x2e,
-	0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x12, 0x23, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x46, 0x69, 0x65,
-	0x6c, 0x64, 0x73, 0x12, 0x0a, 0x2e, 0x64, 0x62, 0x2e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x1a,
-	0x08, 0x2e, 0x64, 0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x42, 0x05, 0x5a, 0x03, 0x2f,
-	0x64, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x2e, 0x64, 0x62, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x29, 0x0a, 0x0f, 0x47,
+	0x65, 0x74, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74, 0x53, 0x63, 0x68, 0x65, 0x6d, 0x61, 0x12, 0x0a,
+	0x2e, 0x64, 0x62, 0x2e, 0x53, 0x74, 0x72, 0x69, 0x6e, 0x67, 0x1a, 0x08, 0x2e, 0x64, 0x62, 0x2e,
+	0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x12, 0x26, 0x0a, 0x0c, 0x4f, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x45, 0x78, 0x69, 0x73, 0x74, 0x73, 0x12, 0x0a, 0x2e, 0x64, 0x62, 0x2e, 0x53, 0x74, 0x72, 0x69,
+	0x6e, 0x67, 0x1a, 0x08, 0x2e, 0x64, 0x62, 0x2e, 0x42, 0x6f, 0x6f, 0x6c, 0x22, 0x00, 0x12, 0x31,
+	0x0a, 0x0c, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x15,
+	0x2e, 0x64, 0x62, 0x2e, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64,
+	0x50, 0x61, 0x72, 0x61, 0x6d, 0x1a, 0x08, 0x2e, 0x64, 0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22,
+	0x00, 0x12, 0x28, 0x0a, 0x09, 0x47, 0x65, 0x74, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x0f,
+	0x2e, 0x64, 0x62, 0x2e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x51, 0x75, 0x65, 0x72, 0x79, 0x1a,
+	0x08, 0x2e, 0x64, 0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x12, 0x2e, 0x0a, 0x0d, 0x55,
+	0x70, 0x64, 0x61, 0x74, 0x65, 0x41, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x10, 0x2e, 0x64,
+	0x62, 0x2e, 0x55, 0x70, 0x64, 0x61, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x1a, 0x09,
+	0x2e, 0x64, 0x62, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x2e, 0x0a, 0x0d, 0x44,
+	0x65, 0x6c, 0x65, 0x74, 0x65, 0x41, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x12, 0x10, 0x2e, 0x64,
+	0x62, 0x2e, 0x44, 0x65, 0x6c, 0x65, 0x74, 0x65, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x1a, 0x09,
+	0x2e, 0x64, 0x62, 0x2e, 0x45, 0x6d, 0x70, 0x74, 0x79, 0x22, 0x00, 0x12, 0x2c, 0x0a, 0x0d, 0x47,
+	0x65, 0x74, 0x41, 0x6c, 0x6c, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x73, 0x12, 0x0f, 0x2e, 0x64,
+	0x62, 0x2e, 0x52, 0x65, 0x63, 0x6f, 0x72, 0x64, 0x51, 0x75, 0x65, 0x72, 0x79, 0x1a, 0x08, 0x2e,
+	0x64, 0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x12, 0x23, 0x0a, 0x09, 0x47, 0x65, 0x74,
+	0x46, 0x69, 0x65, 0x6c, 0x64, 0x73, 0x12, 0x0a, 0x2e, 0x64, 0x62, 0x2e, 0x53, 0x74, 0x72, 0x69,
+	0x6e, 0x67, 0x1a, 0x08, 0x2e, 0x64, 0x62, 0x2e, 0x44, 0x61, 0x74, 0x61, 0x22, 0x00, 0x42, 0x05,
+	0x5a, 0x03, 0x2f, 0x64, 0x62, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1848,74 +1978,81 @@ func file_db_proto_rawDescGZIP() []byte {
 	return file_db_proto_rawDescData
 }
 
-var file_db_proto_msgTypes = make([]protoimpl.MessageInfo, 22)
+var file_db_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_db_proto_goTypes = []interface{}{
-	(*FieldsResult)(nil),      // 0: db.FieldsResult
-	(*CreateRecordParam)(nil), // 1: db.CreateRecordParam
-	(*ObjectFieldParam)(nil),  // 2: db.ObjectFieldParam
-	(*DeleteRecord)(nil),      // 3: db.DeleteRecord
-	(*UpdateRecord)(nil),      // 4: db.UpdateRecord
-	(*RecordQuery)(nil),       // 5: db.RecordQuery
-	(*ObjectQuery)(nil),       // 6: db.ObjectQuery
-	(*Sort)(nil),              // 7: db.Sort
-	(*Filter)(nil),            // 8: db.Filter
-	(*Join)(nil),              // 9: db.Join
-	(*QueryField)(nil),        // 10: db.QueryField
-	(*UpdateField)(nil),       // 11: db.UpdateField
-	(*FieldUpdate)(nil),       // 12: db.FieldUpdate
-	(*ObjectField)(nil),       // 13: db.ObjectField
-	(*DeleteField)(nil),       // 14: db.DeleteField
-	(*ObjectMeta)(nil),        // 15: db.ObjectMeta
-	(*Object)(nil),            // 16: db.Object
-	(*LinkField)(nil),         // 17: db.LinkField
-	(*Field)(nil),             // 18: db.Field
-	(*String)(nil),            // 19: db.String
-	(*Data)(nil),              // 20: db.Data
-	(*Empty)(nil),             // 21: db.Empty
+	(*Ping)(nil),              // 0: db.Ping
+	(*Pong)(nil),              // 1: db.Pong
+	(*FieldsResult)(nil),      // 2: db.FieldsResult
+	(*CreateRecordParam)(nil), // 3: db.CreateRecordParam
+	(*ObjectFieldParam)(nil),  // 4: db.ObjectFieldParam
+	(*DeleteRecord)(nil),      // 5: db.DeleteRecord
+	(*UpdateRecord)(nil),      // 6: db.UpdateRecord
+	(*RecordQuery)(nil),       // 7: db.RecordQuery
+	(*ObjectQuery)(nil),       // 8: db.ObjectQuery
+	(*Sort)(nil),              // 9: db.Sort
+	(*Filter)(nil),            // 10: db.Filter
+	(*Join)(nil),              // 11: db.Join
+	(*QueryField)(nil),        // 12: db.QueryField
+	(*UpdateField)(nil),       // 13: db.UpdateField
+	(*FieldUpdate)(nil),       // 14: db.FieldUpdate
+	(*ObjectField)(nil),       // 15: db.ObjectField
+	(*DeleteField)(nil),       // 16: db.DeleteField
+	(*ObjectMeta)(nil),        // 17: db.ObjectMeta
+	(*Object)(nil),            // 18: db.Object
+	(*LinkField)(nil),         // 19: db.LinkField
+	(*Field)(nil),             // 20: db.Field
+	(*String)(nil),            // 21: db.String
+	(*Data)(nil),              // 22: db.Data
+	(*Empty)(nil),             // 23: db.Empty
+	(*Bool)(nil),              // 24: db.Bool
 }
 var file_db_proto_depIdxs = []int32{
-	18, // 0: db.FieldsResult.fields:type_name -> db.Field
-	18, // 1: db.ObjectFieldParam.fields:type_name -> db.Field
-	8,  // 2: db.RecordQuery.Filters:type_name -> db.Filter
-	9,  // 3: db.RecordQuery.SubQuery:type_name -> db.Join
-	7,  // 4: db.RecordQuery.Sort:type_name -> db.Sort
-	7,  // 5: db.ObjectQuery.Sort:type_name -> db.Sort
-	8,  // 6: db.ObjectQuery.Filters:type_name -> db.Filter
-	10, // 7: db.ObjectQuery.Fields:type_name -> db.QueryField
-	8,  // 8: db.Join.Filters:type_name -> db.Filter
-	12, // 9: db.UpdateField.Fields:type_name -> db.FieldUpdate
-	18, // 10: db.ObjectField.fields:type_name -> db.Field
-	15, // 11: db.Object.Meta:type_name -> db.ObjectMeta
-	18, // 12: db.Object.Fields:type_name -> db.Field
-	17, // 13: db.Object.Links:type_name -> db.LinkField
-	16, // 14: db.db.CreateObject:input_type -> db.Object
-	2,  // 15: db.db.AddObjectFields:input_type -> db.ObjectFieldParam
-	15, // 16: db.db.UpdateObjectMeta:input_type -> db.ObjectMeta
-	19, // 17: db.db.DeleteObject:input_type -> db.String
-	14, // 18: db.db.DeleteFields:input_type -> db.DeleteField
-	11, // 19: db.db.UpdateObjectField:input_type -> db.UpdateField
-	6,  // 20: db.db.GetObjectSchema:input_type -> db.ObjectQuery
-	1,  // 21: db.db.CreateRecord:input_type -> db.CreateRecordParam
-	5,  // 22: db.db.GetRecord:input_type -> db.RecordQuery
-	4,  // 23: db.db.UpdateARecord:input_type -> db.UpdateRecord
-	3,  // 24: db.db.DeleteARecord:input_type -> db.DeleteRecord
-	5,  // 25: db.db.GetAllRecords:input_type -> db.RecordQuery
-	19, // 26: db.db.GetFields:input_type -> db.String
-	21, // 27: db.db.CreateObject:output_type -> db.Empty
-	20, // 28: db.db.AddObjectFields:output_type -> db.Data
-	21, // 29: db.db.UpdateObjectMeta:output_type -> db.Empty
-	21, // 30: db.db.DeleteObject:output_type -> db.Empty
-	21, // 31: db.db.DeleteFields:output_type -> db.Empty
-	21, // 32: db.db.UpdateObjectField:output_type -> db.Empty
-	20, // 33: db.db.GetObjectSchema:output_type -> db.Data
-	20, // 34: db.db.CreateRecord:output_type -> db.Data
-	20, // 35: db.db.GetRecord:output_type -> db.Data
-	21, // 36: db.db.UpdateARecord:output_type -> db.Empty
-	21, // 37: db.db.DeleteARecord:output_type -> db.Empty
-	20, // 38: db.db.GetAllRecords:output_type -> db.Data
-	20, // 39: db.db.GetFields:output_type -> db.Data
-	27, // [27:40] is the sub-list for method output_type
-	14, // [14:27] is the sub-list for method input_type
+	20, // 0: db.FieldsResult.fields:type_name -> db.Field
+	20, // 1: db.ObjectFieldParam.fields:type_name -> db.Field
+	10, // 2: db.RecordQuery.Filters:type_name -> db.Filter
+	11, // 3: db.RecordQuery.SubQuery:type_name -> db.Join
+	9,  // 4: db.RecordQuery.Sort:type_name -> db.Sort
+	9,  // 5: db.ObjectQuery.Sort:type_name -> db.Sort
+	10, // 6: db.ObjectQuery.Filters:type_name -> db.Filter
+	12, // 7: db.ObjectQuery.Fields:type_name -> db.QueryField
+	10, // 8: db.Join.Filters:type_name -> db.Filter
+	14, // 9: db.UpdateField.Fields:type_name -> db.FieldUpdate
+	20, // 10: db.ObjectField.fields:type_name -> db.Field
+	17, // 11: db.Object.Meta:type_name -> db.ObjectMeta
+	20, // 12: db.Object.Fields:type_name -> db.Field
+	19, // 13: db.Object.Links:type_name -> db.LinkField
+	0,  // 14: db.db.SendPing:input_type -> db.Ping
+	18, // 15: db.db.CreateObject:input_type -> db.Object
+	4,  // 16: db.db.AddObjectFields:input_type -> db.ObjectFieldParam
+	17, // 17: db.db.UpdateObjectMeta:input_type -> db.ObjectMeta
+	21, // 18: db.db.DeleteObject:input_type -> db.String
+	16, // 19: db.db.DeleteFields:input_type -> db.DeleteField
+	13, // 20: db.db.UpdateObjectField:input_type -> db.UpdateField
+	21, // 21: db.db.GetObjectSchema:input_type -> db.String
+	21, // 22: db.db.ObjectExists:input_type -> db.String
+	3,  // 23: db.db.CreateRecord:input_type -> db.CreateRecordParam
+	7,  // 24: db.db.GetRecord:input_type -> db.RecordQuery
+	6,  // 25: db.db.UpdateARecord:input_type -> db.UpdateRecord
+	5,  // 26: db.db.DeleteARecord:input_type -> db.DeleteRecord
+	7,  // 27: db.db.GetAllRecords:input_type -> db.RecordQuery
+	21, // 28: db.db.GetFields:input_type -> db.String
+	1,  // 29: db.db.SendPing:output_type -> db.Pong
+	23, // 30: db.db.CreateObject:output_type -> db.Empty
+	22, // 31: db.db.AddObjectFields:output_type -> db.Data
+	23, // 32: db.db.UpdateObjectMeta:output_type -> db.Empty
+	23, // 33: db.db.DeleteObject:output_type -> db.Empty
+	23, // 34: db.db.DeleteFields:output_type -> db.Empty
+	23, // 35: db.db.UpdateObjectField:output_type -> db.Empty
+	22, // 36: db.db.GetObjectSchema:output_type -> db.Data
+	24, // 37: db.db.ObjectExists:output_type -> db.Bool
+	22, // 38: db.db.CreateRecord:output_type -> db.Data
+	22, // 39: db.db.GetRecord:output_type -> db.Data
+	23, // 40: db.db.UpdateARecord:output_type -> db.Empty
+	23, // 41: db.db.DeleteARecord:output_type -> db.Empty
+	22, // 42: db.db.GetAllRecords:output_type -> db.Data
+	22, // 43: db.db.GetFields:output_type -> db.Data
+	29, // [29:44] is the sub-list for method output_type
+	14, // [14:29] is the sub-list for method input_type
 	14, // [14:14] is the sub-list for extension type_name
 	14, // [14:14] is the sub-list for extension extendee
 	0,  // [0:14] is the sub-list for field type_name
@@ -1928,7 +2065,7 @@ func file_db_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_db_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FieldsResult); i {
+			switch v := v.(*Ping); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1940,7 +2077,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateRecordParam); i {
+			switch v := v.(*Pong); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1952,7 +2089,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectFieldParam); i {
+			switch v := v.(*FieldsResult); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1964,7 +2101,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteRecord); i {
+			switch v := v.(*CreateRecordParam); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1976,7 +2113,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateRecord); i {
+			switch v := v.(*ObjectFieldParam); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1988,7 +2125,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RecordQuery); i {
+			switch v := v.(*DeleteRecord); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2000,7 +2137,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectQuery); i {
+			switch v := v.(*UpdateRecord); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2012,7 +2149,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Sort); i {
+			switch v := v.(*RecordQuery); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2024,7 +2161,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Filter); i {
+			switch v := v.(*ObjectQuery); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2036,7 +2173,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Join); i {
+			switch v := v.(*Sort); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2048,7 +2185,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*QueryField); i {
+			switch v := v.(*Filter); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2060,7 +2197,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateField); i {
+			switch v := v.(*Join); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2072,7 +2209,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*FieldUpdate); i {
+			switch v := v.(*QueryField); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2084,7 +2221,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectField); i {
+			switch v := v.(*UpdateField); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2096,7 +2233,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DeleteField); i {
+			switch v := v.(*FieldUpdate); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2108,7 +2245,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ObjectMeta); i {
+			switch v := v.(*ObjectField); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2120,7 +2257,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Object); i {
+			switch v := v.(*DeleteField); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2132,7 +2269,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*LinkField); i {
+			switch v := v.(*ObjectMeta); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2144,7 +2281,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Field); i {
+			switch v := v.(*Object); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2156,7 +2293,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*String); i {
+			switch v := v.(*LinkField); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2168,7 +2305,7 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Data); i {
+			switch v := v.(*Field); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2180,7 +2317,43 @@ func file_db_proto_init() {
 			}
 		}
 		file_db_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*String); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_db_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Data); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_db_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Empty); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_db_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Bool); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2198,7 +2371,7 @@ func file_db_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_db_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   22,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

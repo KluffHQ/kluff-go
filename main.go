@@ -3,6 +3,7 @@ package kluff
 import (
 	"context"
 
+	"github.com/kluff-com/kluff-go/data/db"
 	"github.com/kluff-com/kluff-go/data/helloworld"
 	"github.com/kluff-com/kluff-go/pkg/internals"
 	"google.golang.org/grpc"
@@ -15,7 +16,7 @@ type Config struct {
 
 func authInterceptor(Config Config) grpc.UnaryClientInterceptor {
 	return func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
-		// TODO: Add authtication logic
+		// TODO: Add authentication logic
 		ctx = metadata.AppendToOutgoingContext(ctx, "authorization", Config.APIKey)
 		return invoker(ctx, method, req, reply, cc, opts...)
 	}
@@ -36,6 +37,11 @@ func New(config Config) (kluffSDK, error) {
 		HelloWorld: helloworld.NewHelloWorldClient(conn),
 	}
 
+	// Send Ping to the server to check if everything is working fine
+	err = sdk.SendPing(context.Background(), &db.Ping{})
+	if err != nil {
+		return kluffSDK{}, err
+	}
 	return sdk, nil
 }
 
