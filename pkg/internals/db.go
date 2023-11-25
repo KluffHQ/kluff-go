@@ -8,12 +8,18 @@ import (
 	"google.golang.org/grpc"
 )
 
-type session struct {
-	*Interactor
-}
-
 type Interactor struct {
 	cl db.DbClient
+}
+
+type ObjectSchema struct {
+	APiName       string      `json:"api_name"`
+	CreatedByID   float64     `json:"created_by_id"`
+	Fields        []*db.Field `json:"fields"`
+	Owner         string      `json:"owner"`
+	PluralLabel   string      `json:"plural_label"`
+	SingularLabel string      `json:"singular_label"`
+	TotalCount    float64     `json:"total_count"`
 }
 
 func NewDBInteractor(conn grpc.ClientConnInterface) Interactor {
@@ -50,6 +56,14 @@ func (i *Interactor) ObjectExists(context context.Context, apiName string) (bool
 func (i *Interactor) SendPing(context context.Context, ping *db.Ping) error {
 	_, err := i.cl.SendPing(context, ping)
 	return err
+}
+
+func (i *Interactor) GetObjects(context context.Context, q *db.ObjectQuery) ([]map[string]any, error) {
+	data, err := i.cl.GetObjects(context, q)
+	if err != nil {
+		return nil, err
+	}
+	return unMarshalMapList(data)
 }
 
 func (i *Interactor) AddObjectFields(context context.Context, param *db.ObjectFieldParam) (map[string]any, error) {
@@ -108,15 +122,14 @@ func (i *Interactor) GetObjectSchema(context context.Context, apiName string) (m
 	return unMarshalMap(data)
 }
 
-func (i *Interactor) CreateRecord(context context.Context, apiName string, data map[string]any) (map[string]any, error) {
+func (i *Interactor) CreateRecord(context context.Context, Name string, data map[string]any) (map[string]any, error) {
 	v, err := json.Marshal(data)
 	if err != nil {
 		return nil, err
 	}
 	d, err := i.cl.CreateRecord(context, &db.CreateRecordParam{
-		APIName: apiName,
-		Owner:   "some owner",
-		Fields:  v,
+		ObjectName: Name,
+		Fields:     v,
 	})
 
 	if err != nil {
@@ -169,7 +182,9 @@ func (i *Interactor) GetFields(context context.Context, apiName string) ([]*db.F
 	if err != nil {
 		return nil, err
 	}
-	res := []*db.Field{}
+
+	// fmt.Println(string(data.Result))
+	res := ObjectSchema{}
 	err = json.Unmarshal(data.Result, &res)
-	return res, err
+	return res.Fields, err
 }

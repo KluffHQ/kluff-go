@@ -10,42 +10,35 @@ import (
 	"google.golang.org/grpc/metadata"
 )
 
-type Config struct {
-	APIKey string
-}
-
-func authInterceptor(Config Config) grpc.UnaryClientInterceptor {
+func authInterceptor(token string) grpc.UnaryClientInterceptor {
 	return func(ctx context.Context, method string, req, reply any, cc *grpc.ClientConn, invoker grpc.UnaryInvoker, opts ...grpc.CallOption) error {
 		// TODO: Add authentication logic
-		ctx = metadata.AppendToOutgoingContext(ctx, "authorization", Config.APIKey)
+		ctx = metadata.AppendToOutgoingContext(ctx, "authorization", token)
 		return invoker(ctx, method, req, reply, cc, opts...)
 	}
 }
 
-func New(config Config) (kluffSDK, error) {
+func New(token string) (*SDK, error) {
 	conn, err := grpc.Dial("localhost:9091",
 		grpc.WithInsecure(),
-		grpc.WithUnaryInterceptor(authInterceptor(config)),
+		grpc.WithUnaryInterceptor(authInterceptor(token)),
 	)
-
 	if err != nil {
-		return kluffSDK{}, err
+		return nil, err
 	}
-
-	sdk := kluffSDK{
+	sdk := SDK{
 		Interactor: internals.NewDBInteractor(conn),
 		HelloWorld: helloworld.NewHelloWorldClient(conn),
 	}
-
 	// Send Ping to the server to check if everything is working fine
 	err = sdk.SendPing(context.Background(), &db.Ping{})
 	if err != nil {
-		return kluffSDK{}, err
+		return nil, err
 	}
-	return sdk, nil
+	return &sdk, nil
 }
 
-type kluffSDK struct {
+type SDK struct {
 	internals.Interactor
 	HelloWorld helloworld.HelloWorldClient
 }

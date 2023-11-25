@@ -8,13 +8,12 @@ import (
 	"github.com/kluff-com/kluff-go/data/db"
 )
 
+const testToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXV0aGVudGljYXRpb24iLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJfaWQiOjIsIm9yZ2FuaXphdGlvbl9pZCI6MiwiYXBwX3Rva2VuIjp0cnVlLCJpc3N1ZWRfYXQiOiIyMDIzLTA5LTI4VDIzOjA2OjMxLjkwMzIzNVoiLCJleHBpcmVkX2F0IjoiMjAyMy0xMC0wMVQyMzowNjozMS45MDMyMzVaIn0.4p1CdOYKI3CPUMP2kAviT3MjVi8-iHbWsSiq1DHk_Ec"
+
 func TestDB(t *testing.T) {
-	sdk, err := kluff.New(kluff.Config{
-		APIKey: "some api Key",
-	})
+	sdk, err := kluff.New(testToken)
 	if err != nil {
-		t.Error(err)
-		_ = sdk
+		t.Fatal(err)
 	}
 	apiName := "st_test_users"
 
@@ -46,8 +45,6 @@ func TestDB(t *testing.T) {
 		t.Error(err)
 	}
 
-	defer sdk.DeleteObject(context.Background(), apiName)
-
 	ok, _ = sdk.ObjectExists(context.Background(), apiName)
 	if !ok {
 		t.Errorf("there must an %s object", apiName)
@@ -59,7 +56,7 @@ func TestDB(t *testing.T) {
 	}
 
 	if len(fields) != 2 {
-		t.Error("unable to find fields")
+		t.Error("invalid field length")
 	}
 
 	// create some records
@@ -143,6 +140,11 @@ func TestDB(t *testing.T) {
 
 	if len(records) != 0 {
 		t.Error("records not deleted")
+	}
+
+	err = sdk.DeleteObject(context.Background(), apiName)
+	if err != nil {
+		t.Error(err)
 	}
 
 }
