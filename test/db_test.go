@@ -11,31 +11,31 @@ import (
 const testToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXV0aGVudGljYXRpb24iLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJfaWQiOjIsIm9yZ2FuaXphdGlvbl9pZCI6MiwiYXBwX3Rva2VuIjp0cnVlLCJpc3N1ZWRfYXQiOiIyMDIzLTA5LTI4VDIzOjA2OjMxLjkwMzIzNVoiLCJleHBpcmVkX2F0IjoiMjAyMy0xMC0wMVQyMzowNjozMS45MDMyMzVaIn0.4p1CdOYKI3CPUMP2kAviT3MjVi8-iHbWsSiq1DHk_Ec"
 
 func TestDB(t *testing.T) {
-	sdk, err := kluff.New(testToken)
+	sdk, err := kluff.Get(testToken)
 	if err != nil {
 		t.Fatal(err)
 	}
-	apiName := "st_test_users"
+	objectName := "st_test_users"
 
-	ok, _ := sdk.ObjectExists(context.Background(), apiName)
+	ok, _ := sdk.ObjectExists(context.Background(), objectName)
 	if ok {
-		t.Errorf("%s must be exist", apiName)
+		t.Errorf("%s must be exist", objectName)
 	}
 	// Create object
 	err = sdk.CreateObject(context.Background(), &db.Object{
 		Meta: &db.ObjectMeta{
-			APIName:     apiName,
+			APIName:     objectName,
 			Description: "Some description",
-			Owner:       "abel",
+			Owner:       1,
 		},
 		Fields: []*db.Field{
 			{
-				FieldName: "fullname",
+				Name:      "fullname",
 				FieldType: "Text",
 				Required:  true,
 			},
 			{
-				FieldName: "age",
+				Name:      "age",
 				FieldType: "Int",
 				Default:   "18",
 			},
@@ -45,12 +45,12 @@ func TestDB(t *testing.T) {
 		t.Error(err)
 	}
 
-	ok, _ = sdk.ObjectExists(context.Background(), apiName)
+	ok, _ = sdk.ObjectExists(context.Background(), objectName)
 	if !ok {
-		t.Errorf("there must an %s object", apiName)
+		t.Errorf("there must an %s object", objectName)
 	}
 	// get the fields
-	fields, err := sdk.GetFields(context.Background(), apiName)
+	fields, err := sdk.GetFields(context.Background(), objectName)
 	if err != nil {
 		t.Error(err)
 	}
@@ -76,7 +76,7 @@ func TestDB(t *testing.T) {
 	}
 
 	for _, d := range data {
-		_, err := sdk.CreateRecord(context.Background(), apiName, d)
+		_, err := sdk.CreateRecord(context.Background(), objectName, d)
 		if err != nil {
 			t.Error(err)
 		}
@@ -84,7 +84,7 @@ func TestDB(t *testing.T) {
 
 	// get objects
 	records, err := sdk.GetRecords(context.Background(), &db.RecordQuery{
-		APIName: apiName,
+		APIName: objectName,
 		Fields:  []string{"fullname", "age", "id"},
 	})
 
@@ -98,7 +98,7 @@ func TestDB(t *testing.T) {
 
 	// get a specific record
 	record, err := sdk.GetARecord(context.Background(), &db.RecordQuery{
-		APIName: apiName,
+		APIName: objectName,
 		Fields:  []string{"fullname"},
 		Filters: []*db.Filter{
 			{
@@ -119,7 +119,7 @@ func TestDB(t *testing.T) {
 
 	// Delete A record
 	for _, v := range records {
-		err := sdk.DeleteARecord(context.Background(), apiName, v["id"].(float64))
+		err := sdk.DeleteARecord(context.Background(), objectName, v["id"].(float64))
 		if err != nil {
 			t.Error(err)
 		}
@@ -127,7 +127,7 @@ func TestDB(t *testing.T) {
 
 	// check if all records are deleted
 	records, err = sdk.GetRecords(context.Background(), &db.RecordQuery{
-		APIName: apiName,
+		APIName: objectName,
 	})
 
 	if err != nil {
@@ -142,7 +142,7 @@ func TestDB(t *testing.T) {
 		t.Error("records not deleted")
 	}
 
-	err = sdk.DeleteObject(context.Background(), apiName)
+	err = sdk.DeleteObject(context.Background(), objectName)
 	if err != nil {
 		t.Error(err)
 	}

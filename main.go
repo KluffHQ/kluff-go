@@ -18,7 +18,9 @@ func authInterceptor(token string) grpc.UnaryClientInterceptor {
 	}
 }
 
-func New(token string) (*SDK, error) {
+// get the kluff sdk instance.
+// the token param is the should be the token the is parsed from the frontend
+func Get(token string) (*SDK, error) {
 	conn, err := grpc.Dial("localhost:9091",
 		grpc.WithInsecure(),
 		grpc.WithUnaryInterceptor(authInterceptor(token)),
