@@ -96,10 +96,10 @@ func (i *Interactor) DeleteObject(context context.Context, apiName string) error
 	return err
 }
 
-func (i *Interactor) DeleteFields(context context.Context, apiName string, fields ...string) error {
+func (i *Interactor) DeleteFields(context context.Context, name string, fields ...string) error {
 	_, err := i.cl.DeleteFields(context, &db.DeleteField{
-		APIName: apiName,
-		Fields:  fields,
+		Name:   name,
+		Fields: fields,
 	})
 	return err
 }

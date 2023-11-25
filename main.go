@@ -7,6 +7,7 @@ import (
 	"github.com/kluff-com/kluff-go/data/helloworld"
 	"github.com/kluff-com/kluff-go/pkg/internals"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
 )
 
@@ -22,7 +23,7 @@ func authInterceptor(token string) grpc.UnaryClientInterceptor {
 // the token param is the should be the token the is parsed from the frontend
 func Get(token string) (*SDK, error) {
 	conn, err := grpc.Dial("localhost:9091",
-		grpc.WithInsecure(),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithUnaryInterceptor(authInterceptor(token)),
 	)
 	if err != nil {

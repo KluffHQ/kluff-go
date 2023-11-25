@@ -24,9 +24,8 @@ func TestDB(t *testing.T) {
 	// Create object
 	err = sdk.CreateObject(context.Background(), &db.Object{
 		Meta: &db.ObjectMeta{
-			APIName:     objectName,
+			Name:        objectName,
 			Description: "Some description",
-			Owner:       1,
 		},
 		Fields: []*db.Field{
 			{
