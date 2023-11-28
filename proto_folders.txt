@@ -1,2 +1,0 @@
-helloworld
-# Add more folder paths as needed
