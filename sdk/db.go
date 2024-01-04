@@ -1,21 +1,21 @@
-package internals
+package sdk
 
 import (
 	"context"
 	"encoding/json"
 
-	"github.com/kluff-com/kluff-go/data/db"
+	"github.com/kluff-com/kluff-go/dt"
 	"google.golang.org/grpc"
 )
 
 type Interactor struct {
-	cl db.DbClient
+	cl dt.DbClient
 }
 
 type ObjectSchema struct {
-	APiName       string      `json:"api_name"`
+	Name          string      `json:"name"`
 	CreatedByID   float64     `json:"created_by_id"`
-	Fields        []*db.Field `json:"fields"`
+	Fields        []*dt.Field `json:"fields"`
 	Owner         string      `json:"owner"`
 	PluralLabel   string      `json:"plural_label"`
 	SingularLabel string      `json:"singular_label"`
@@ -23,42 +23,54 @@ type ObjectSchema struct {
 }
 
 func NewDBInteractor(conn grpc.ClientConnInterface) Interactor {
-	client := db.NewDbClient(conn)
+	client := dt.NewDbClient(conn)
 	return Interactor{
 		cl: client,
 	}
 }
 
-func unMarshalMap(data *db.Data) (map[string]any, error) {
+func unMarshalMap(data *dt.Data) (map[string]any, error) {
 	v := map[string]any{}
 	err := json.Unmarshal(data.Result, &v)
 	return v, err
 }
-func unMarshalMapList(data *db.Data) ([]map[string]any, error) {
+
+func unMarshalMapList(data *dt.Data) ([]map[string]any, error) {
 	v := []map[string]any{}
 	err := json.Unmarshal(data.Result, &v)
 	return v, err
 }
 
-func (i *Interactor) CreateObject(context context.Context, obj *db.Object) error {
+// New Methods
+func (i *Interactor) Object(name string) *Object {
+	return &Object{
+		cl: &i.cl,
+		Base: dt.ObjectBase{
+			Name: name,
+		},
+	}
+}
+
+// Old Methods
+func (i *Interactor) CreateObject(context context.Context, obj *dt.Object) error {
 	_, err := i.cl.CreateObject(context, obj)
 	return err
 }
 
 func (i *Interactor) ObjectExists(context context.Context, apiName string) (bool, error) {
-	v, err := i.cl.ObjectExists(context, &db.String{Value: apiName})
+	v, err := i.cl.ObjectExists(context, &dt.String{Value: apiName})
 	if err != nil {
 		return false, err
 	}
 	return v.Value, nil
 }
 
-func (i *Interactor) SendPing(context context.Context, ping *db.Ping) error {
+func (i *Interactor) SendPing(context context.Context, ping *dt.Ping) error {
 	_, err := i.cl.SendPing(context, ping)
 	return err
 }
 
-func (i *Interactor) GetObjects(context context.Context, q *db.ObjectQuery) ([]map[string]any, error) {
+func (i *Interactor) GetObjects(context context.Context, q *dt.ObjectQuery) ([]map[string]any, error) {
 	data, err := i.cl.GetObjects(context, q)
 	if err != nil {
 		return nil, err
@@ -66,7 +78,7 @@ func (i *Interactor) GetObjects(context context.Context, q *db.ObjectQuery) ([]m
 	return unMarshalMapList(data)
 }
 
-func (i *Interactor) AddObjectFields(context context.Context, param *db.ObjectFieldParam) (map[string]any, error) {
+func (i *Interactor) AddObjectFields(context context.Context, param *dt.ObjectFieldParam) (map[string]any, error) {
 	data, err := i.cl.AddObjectFields(context, param)
 	if err != nil {
 		return nil, err
@@ -74,7 +86,7 @@ func (i *Interactor) AddObjectFields(context context.Context, param *db.ObjectFi
 	return unMarshalMap(data)
 }
 
-func (i *Interactor) UpdateObjectMeta(context context.Context, param *db.ObjectMeta) error {
+func (i *Interactor) UpdateObjectMeta(context context.Context, param *dt.ObjectBase) error {
 	_, err := i.cl.UpdateObjectMeta(context, param)
 	return err
 }
@@ -82,7 +94,7 @@ func (i *Interactor) UpdateObjectMeta(context context.Context, param *db.ObjectM
 // FIXME: data returned by json.Marshal is `float64` regardless, passing record record["id"] as `recID` directly panics
 // unless you parse it as float64 and converting it to int64 to be parsed by the grpc
 func (i *Interactor) DeleteARecord(context context.Context, apiName string, recID float64) error {
-	_, err := i.cl.DeleteARecord(context, &db.DeleteRecord{
+	_, err := i.cl.DeleteARecord(context, &dt.DeleteRecord{
 		APIName:  apiName,
 		RecordID: int64(recID),
 	})
@@ -90,22 +102,22 @@ func (i *Interactor) DeleteARecord(context context.Context, apiName string, recI
 }
 
 func (i *Interactor) DeleteObject(context context.Context, apiName string) error {
-	_, err := i.cl.DeleteObject(context, &db.String{
+	_, err := i.cl.DeleteObject(context, &dt.String{
 		Value: apiName,
 	})
 	return err
 }
 
 func (i *Interactor) DeleteFields(context context.Context, name string, fields ...string) error {
-	_, err := i.cl.DeleteFields(context, &db.DeleteField{
+	_, err := i.cl.DeleteFields(context, &dt.DeleteField{
 		Name:   name,
 		Fields: fields,
 	})
 	return err
 }
 
-func (i *Interactor) UpdateObjectField(context context.Context, apiName string, fields []*db.FieldUpdate) error {
-	_, err := i.cl.UpdateObjectField(context, &db.UpdateField{
+func (i *Interactor) UpdateObjectField(context context.Context, apiName string, fields []*dt.FieldUpdate) error {
+	_, err := i.cl.UpdateObjectField(context, &dt.UpdateField{
 		APIName: apiName,
 		Fields:  fields,
 	})
@@ -113,7 +125,7 @@ func (i *Interactor) UpdateObjectField(context context.Context, apiName string, 
 }
 
 func (i *Interactor) GetObjectSchema(context context.Context, apiName string) (map[string]any, error) {
-	data, err := i.cl.GetObjectSchema(context, &db.String{
+	data, err := i.cl.GetObjectSchema(context, &dt.String{
 		Value: apiName,
 	})
 	if err != nil {
@@ -127,7 +139,7 @@ func (i *Interactor) CreateRecord(context context.Context, Name string, data map
 	if err != nil {
 		return nil, err
 	}
-	d, err := i.cl.CreateRecord(context, &db.CreateRecordParam{
+	d, err := i.cl.CreateRecord(context, &dt.CreateRecordParam{
 		ObjectName: Name,
 		Fields:     v,
 	})
@@ -138,7 +150,7 @@ func (i *Interactor) CreateRecord(context context.Context, Name string, data map
 	return unMarshalMap(d)
 }
 
-func (i *Interactor) GetARecord(context context.Context, q *db.RecordQuery) (map[string]any, error) {
+func (i *Interactor) GetARecord(context context.Context, q *dt.RecordQuery) (map[string]any, error) {
 	data, err := i.cl.GetRecord(context, q)
 	if err != nil {
 		return nil, err
@@ -146,7 +158,7 @@ func (i *Interactor) GetARecord(context context.Context, q *db.RecordQuery) (map
 	return unMarshalMap(data)
 }
 
-func (i *Interactor) GetRecords(context context.Context, q *db.RecordQuery) ([]map[string]any, error) {
+func (i *Interactor) GetRecords(context context.Context, q *dt.RecordQuery) ([]map[string]any, error) {
 	data, err := i.cl.GetAllRecords(context, q)
 	if err != nil {
 		return nil, err
@@ -159,7 +171,7 @@ func (i *Interactor) UpdateRecord(context context.Context, apiName string, recor
 	if err != nil {
 		return err
 	}
-	_, err = i.cl.UpdateARecord(context, &db.UpdateRecord{
+	_, err = i.cl.UpdateARecord(context, &dt.UpdateRecord{
 		APIName:  apiName,
 		RecordId: recordID,
 		Options:  v,
@@ -168,15 +180,15 @@ func (i *Interactor) UpdateRecord(context context.Context, apiName string, recor
 }
 
 func (i *Interactor) DeleteRecord(context context.Context, apiName string, recordID int64) error {
-	_, err := i.cl.DeleteARecord(context, &db.DeleteRecord{
+	_, err := i.cl.DeleteARecord(context, &dt.DeleteRecord{
 		APIName:  apiName,
 		RecordID: recordID,
 	})
 	return err
 }
 
-func (i *Interactor) GetFields(context context.Context, apiName string) ([]*db.Field, error) {
-	data, err := i.cl.GetFields(context, &db.String{
+func (i *Interactor) GetFields(context context.Context, apiName string) ([]*dt.Field, error) {
+	data, err := i.cl.GetFields(context, &dt.String{
 		Value: apiName,
 	})
 	if err != nil {

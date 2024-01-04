@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/kluff-com/kluff-go"
-	"github.com/kluff-com/kluff-go/data/db"
+	"github.com/kluff-com/kluff-go/dt"
 )
 
 const testToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXV0aGVudGljYXRpb24iLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJfaWQiOjIsIm9yZ2FuaXphdGlvbl9pZCI6MiwiYXBwX3Rva2VuIjp0cnVlLCJpc3N1ZWRfYXQiOiIyMDIzLTA5LTI4VDIzOjA2OjMxLjkwMzIzNVoiLCJleHBpcmVkX2F0IjoiMjAyMy0xMC0wMVQyMzowNjozMS45MDMyMzVaIn0.4p1CdOYKI3CPUMP2kAviT3MjVi8-iHbWsSiq1DHk_Ec"
@@ -22,12 +22,12 @@ func TestDB(t *testing.T) {
 		t.Errorf("%s must be exist", objectName)
 	}
 	// Create object
-	err = sdk.CreateObject(context.Background(), &db.Object{
-		Meta: &db.ObjectMeta{
+	err = sdk.CreateObject(context.Background(), &dt.Object{
+		Base: &dt.ObjectBase{
 			Name:        objectName,
 			Description: "Some description",
 		},
-		Fields: []*db.Field{
+		Fields: []*dt.Field{
 			{
 				Name:      "fullname",
 				FieldType: "Text",
@@ -82,7 +82,7 @@ func TestDB(t *testing.T) {
 	}
 
 	// get objects
-	records, err := sdk.GetRecords(context.Background(), &db.RecordQuery{
+	records, err := sdk.GetRecords(context.Background(), &dt.RecordQuery{
 		APIName: objectName,
 		Fields:  []string{"fullname", "age", "id"},
 	})
@@ -96,10 +96,10 @@ func TestDB(t *testing.T) {
 	}
 
 	// get a specific record
-	record, err := sdk.GetARecord(context.Background(), &db.RecordQuery{
+	record, err := sdk.GetARecord(context.Background(), &dt.RecordQuery{
 		APIName: objectName,
 		Fields:  []string{"fullname"},
-		Filters: []*db.Filter{
+		Filters: []*dt.Filter{
 			{
 				Field:    "fullname",
 				Operator: "=",
@@ -125,7 +125,7 @@ func TestDB(t *testing.T) {
 	}
 
 	// check if all records are deleted
-	records, err = sdk.GetRecords(context.Background(), &db.RecordQuery{
+	records, err = sdk.GetRecords(context.Background(), &dt.RecordQuery{
 		APIName: objectName,
 	})
 
