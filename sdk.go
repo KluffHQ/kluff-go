@@ -3,9 +3,8 @@ package kluff
 import (
 	"context"
 
-	"github.com/kluff-com/kluff-go/data/account"
-	"github.com/kluff-com/kluff-go/data/db"
-	"github.com/kluff-com/kluff-go/pkg/internals"
+	"github.com/kluff-com/kluff-go/db"
+	"github.com/kluff-com/kluff-go/sdk"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
@@ -29,19 +28,17 @@ func Get(token string) (*SDK, error) {
 	if err != nil {
 		return nil, err
 	}
-	sdk := SDK{
-		Interactor: internals.NewDBInteractor(conn),
-		Accounting: account.NewAccountClient(conn),
+	client := SDK{
+		Interactor: sdk.NewDBInteractor(conn),
 	}
 	// Send Ping to the server to check if everything is working fine
-	err = sdk.SendPing(context.Background(), &db.Ping{})
+	err = client.SendPing(context.Background(), &db.Ping{})
 	if err != nil {
 		return nil, err
 	}
-	return &sdk, nil
+	return &client, nil
 }
 
 type SDK struct {
-	internals.Interactor
-	Accounting account.AccountClient
+	sdk.Interactor
 }
