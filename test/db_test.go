@@ -1,110 +1,93 @@
 package test
 
 import (
-	"context"
 	"testing"
 
 	"github.com/kluff-com/kluff-go"
-	"github.com/kluff-com/kluff-go/dt"
+	"github.com/kluff-com/kluff-go/db"
 )
 
-const testToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0eXBlIjoiYXV0aGVudGljYXRpb24iLCJpZCI6IjAwMDAwMDAwLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMCIsInVzZXJfaWQiOjIsIm9yZ2FuaXphdGlvbl9pZCI6MiwiYXBwX3Rva2VuIjp0cnVlLCJpc3N1ZWRfYXQiOiIyMDIzLTA5LTI4VDIzOjA2OjMxLjkwMzIzNVoiLCJleHBpcmVkX2F0IjoiMjAyMy0xMC0wMVQyMzowNjozMS45MDMyMzVaIn0.4p1CdOYKI3CPUMP2kAviT3MjVi8-iHbWsSiq1DHk_Ec"
+const testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOnsic2NoZW1hIjoicHVibGljIn0sInR5cGUiOiJhdXRoZW50aWNhdGlvbiIsImlkIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwidXNlcl9pZCI6MSwib3JnYW5pemF0aW9uX2lkIjoxLCJhcHBfdG9rZW4iOnRydWUsImlzc3VlZF9hdCI6IjIwMjQtMDEtMDZUMDA6MjQ6MzIuNzY4NjE5WiIsImV4cGlyZWRfYXQiOiIyMDI0LTAxLTA2VDA4OjI0OjMyLjc2ODYxOVoifQ.D3NTpBHGm80w5OEmN3oHkD5VO8aXdsQOMUE27t6nJpM"
 
-func TestDB(t *testing.T) {
-	sdk, err := kluff.Get(testToken)
+func TestMethods(t *testing.T) {
+	inter, err := kluff.Get(testToken)
 	if err != nil {
-		t.Fatal(err)
+		t.Log(err)
+		t.Error(err)
 	}
-	objectName := "st_test_users"
 
-	ok, _ := sdk.ObjectExists(context.Background(), objectName)
-	if ok {
-		t.Errorf("%s must be exist", objectName)
-	}
-	// Create object
-	err = sdk.CreateObject(context.Background(), &dt.Object{
-		Base: &dt.ObjectBase{
-			Name:        objectName,
-			Description: "Some description",
-		},
-		Fields: []*dt.Field{
+	// getting a record
+	obj := inter.Object("page_layout")
+	rec, err := obj.GetRecord(&db.RecordQuery{
+		Filters: []*db.Filter{
 			{
-				Name:      "fullname",
-				FieldType: "Text",
-				Required:  true,
+				Field:    "object_name",
+				Operator: "=",
+				Value:    "contract",
 			},
+		},
+	})
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	_, err = rec.Get("id")
+	if err != nil {
+		t.Error(err)
+	}
+
+	// getting records
+
+	recs, err := obj.GetRecords(&db.RecordQuery{
+		Limit: 10,
+	})
+
+	if err != nil {
+		t.Error(err)
+	}
+
+	if len(recs.Data) != 10 {
+		t.Error("limit not working")
+	}
+
+	// create object
+
+	ob := inter.NewObject(&db.Object{
+		Base: &db.BaseObject{
+			Name:       "new_object",
+			NamingRule: "random",
+		},
+		Fields: []*db.Field{
 			{
 				Name:      "age",
-				FieldType: "Int",
-				Default:   "18",
+				FieldType: "Text",
+				Label:     "Enter age",
 			},
 		},
 	})
+
+	e, err := ob.Exists()
 	if err != nil {
 		t.Error(err)
 	}
-
-	ok, _ = sdk.ObjectExists(context.Background(), objectName)
-	if !ok {
-		t.Errorf("there must an %s object", objectName)
-	}
-	// get the fields
-	fields, err := sdk.GetFields(context.Background(), objectName)
-	if err != nil {
-		t.Error(err)
-	}
-
-	if len(fields) != 2 {
-		t.Error("invalid field length")
-	}
-
-	// create some records
-	data := []map[string]any{
-		{
-			"fullname": "abel",
-			"age":      21,
-		},
-		{
-			"fullname": "liagiba",
-			"age":      16,
-		},
-		{
-			"fullname": "another name",
-			"age":      34,
-		},
-	}
-
-	for _, d := range data {
-		_, err := sdk.CreateRecord(context.Background(), objectName, d)
+	if e {
+		err = ob.Delete()
 		if err != nil {
 			t.Error(err)
 		}
 	}
 
-	// get objects
-	records, err := sdk.GetRecords(context.Background(), &dt.RecordQuery{
-		APIName: objectName,
-		Fields:  []string{"fullname", "age", "id"},
-	})
-
+	err = ob.Create()
 	if err != nil {
 		t.Error(err)
 	}
 
-	if len(records) != 3 {
-		t.Error("records not up to")
-	}
-
-	// get a specific record
-	record, err := sdk.GetARecord(context.Background(), &dt.RecordQuery{
-		APIName: objectName,
-		Fields:  []string{"fullname"},
-		Filters: []*dt.Filter{
-			{
-				Field:    "fullname",
-				Operator: "=",
-				Value:    "abel",
-			},
+	err = ob.AddFields([]*db.Field{
+		{
+			Name:      "label",
+			FieldType: "Int",
+			Label:     "Enter some label",
 		},
 	})
 
@@ -112,38 +95,54 @@ func TestDB(t *testing.T) {
 		t.Error(err)
 	}
 
-	if record["fullname"] != "abel" {
-		t.Error("invalid record")
+	ex, err := ob.FieldExists("label")
+	if err != nil {
+		t.Error(err)
 	}
 
-	// Delete A record
-	for _, v := range records {
-		err := sdk.DeleteARecord(context.Background(), objectName, v["id"].(float64))
-		if err != nil {
-			t.Error(err)
-		}
+	if !ex {
+		t.Error("field not added")
 	}
-
-	// check if all records are deleted
-	records, err = sdk.GetRecords(context.Background(), &dt.RecordQuery{
-		APIName: objectName,
+	rec, err = ob.Insert(map[string]any{
+		"age":   "12",
+		"label": 12,
 	})
 
 	if err != nil {
 		t.Error(err)
 	}
 
-	if len(records) != 0 {
-		t.Error("records are not deleted")
-	}
-
-	if len(records) != 0 {
-		t.Error("records not deleted")
-	}
-
-	err = sdk.DeleteObject(context.Background(), objectName)
+	rec.Set("age", "14")
+	err = rec.Save()
 	if err != nil {
 		t.Error(err)
 	}
 
+	recs, err = ob.GetRecords(&db.RecordQuery{})
+	if err != nil {
+		return
+	}
+
+	if recs.Count != 1 {
+		t.Error("there must be only one record")
+	}
+
+	age, err := recs.Data[0].Get("age")
+	if err != nil {
+		t.Error(err)
+	}
+
+	if age.(string) != "14" {
+		t.Error("age must be updated to 14")
+	}
+
+	err = rec.Delete()
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = ob.Delete()
+	if err != nil {
+		t.Error(err)
+	}
 }

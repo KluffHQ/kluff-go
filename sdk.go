@@ -3,7 +3,7 @@ package kluff
 import (
 	"context"
 
-	"github.com/kluff-com/kluff-go/dt"
+	"github.com/kluff-com/kluff-go/db"
 	"github.com/kluff-com/kluff-go/sdk"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -32,7 +32,7 @@ func Get(token string) (*SDK, error) {
 		Interactor: sdk.NewDBInteractor(conn),
 	}
 	// Send Ping to the server to check if everything is working fine
-	err = client.SendPing(context.Background(), &dt.Ping{})
+	err = client.SendPing(context.Background(), &db.Ping{})
 	if err != nil {
 		return nil, err
 	}

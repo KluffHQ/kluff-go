@@ -14,5 +14,3 @@ require (
 	golang.org/x/text v0.13.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20230711160842-782d3b101e98 // indirect
 )
-
-replace github.com/kluff-com/core => /Users/mac/Desktop/dev/kluff/core
