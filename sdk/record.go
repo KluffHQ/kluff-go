@@ -22,6 +22,14 @@ type Response struct {
 	NextPage float64
 }
 
+func (r *Response) Result() []map[string]any {
+	res := []map[string]any{}
+	for _, v := range r.Data {
+		res = append(res, v.Data)
+	}
+	return res
+}
+
 func ParseResponse(object *Object, resp map[string]any) (*Response, error) {
 	data := []*Record{}
 
