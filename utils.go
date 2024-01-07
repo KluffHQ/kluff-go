@@ -1,14 +1,13 @@
-package router
+package kluff
 
 import (
 	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kluff-com/kluff-go/sdk"
 )
 
-func parseSdk(c *gin.Context) (*sdk.Interactor, error) {
+func parseSdk(c *gin.Context) (*Interactor, error) {
 	bearer := c.GetHeader("Authorization")
 	if bearer == "" {
 		bearer, err := c.Cookie("x-kluff-auth")
@@ -19,7 +18,7 @@ func parseSdk(c *gin.Context) (*sdk.Interactor, error) {
 			return nil, errors.New("cookie not found")
 		}
 	}
-	return sdk.Get(bearer)
+	return Get(bearer)
 }
 
 func buildContext(c *gin.Context) (*Context, error) {
@@ -29,7 +28,7 @@ func buildContext(c *gin.Context) (*Context, error) {
 		return nil, errors.New("sdk not fond on the context")
 	}
 
-	sdk, ok := res.(*sdk.Interactor)
+	sdk, ok := res.(*Interactor)
 	if !ok {
 		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": "failed"})
 		return nil, errors.New("invalid sdk value")

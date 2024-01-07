@@ -1,17 +1,16 @@
-package router
+package kluff
 
 import (
 	"fmt"
 
 	"github.com/gin-gonic/gin"
-	"github.com/kluff-com/kluff-go/sdk"
 )
 
 const _sdkKey = "kluff_sdk"
 
 type Context struct {
 	*gin.Context
-	SDK *sdk.Interactor
+	SDK *Interactor
 }
 
 type ApiError struct {
