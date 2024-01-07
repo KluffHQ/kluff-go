@@ -136,6 +136,11 @@ func (o *Object) GetLatestRecord(q *db.RecordQuery) (*Record, error) {
 	return newRecord(o.cl, o.Base.Name, m), nil
 }
 
+func (o *Object) GetFields() ([]*db.Field, error) {
+	data, err := o.cl.GetFields(context.Background(), &db.String{Value: o.Base.Name})
+	return data.Fields, err
+}
+
 func (o *Object) FieldExists(fieldName string) (bool, error) {
 	v, err := o.cl.ObjectFieldExists(context.Background(), &db.FieldData{
 		Object:    o.Base.Name,

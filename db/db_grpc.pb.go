@@ -36,7 +36,7 @@ type DbClient interface {
 	GetRelatedFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Fields, error)
 	GetLatestRecord(ctx context.Context, in *RecordQuery, opts ...grpc.CallOption) (*Data, error)
 	ObjectFieldExists(ctx context.Context, in *FieldData, opts ...grpc.CallOption) (*Bool, error)
-	GetFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Data, error)
+	GetFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Fields, error)
 	// Record Methods
 	CreateRecord(ctx context.Context, in *CreateRecordParam, opts ...grpc.CallOption) (*Data, error)
 	GetRecord(ctx context.Context, in *RecordQuery, opts ...grpc.CallOption) (*Data, error)
@@ -170,8 +170,8 @@ func (c *dbClient) ObjectFieldExists(ctx context.Context, in *FieldData, opts ..
 	return out, nil
 }
 
-func (c *dbClient) GetFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Data, error) {
-	out := new(Data)
+func (c *dbClient) GetFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Fields, error) {
+	out := new(Fields)
 	err := c.cc.Invoke(ctx, "/db.db/GetFields", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -242,7 +242,7 @@ type DbServer interface {
 	GetRelatedFields(context.Context, *String) (*Fields, error)
 	GetLatestRecord(context.Context, *RecordQuery) (*Data, error)
 	ObjectFieldExists(context.Context, *FieldData) (*Bool, error)
-	GetFields(context.Context, *String) (*Data, error)
+	GetFields(context.Context, *String) (*Fields, error)
 	// Record Methods
 	CreateRecord(context.Context, *CreateRecordParam) (*Data, error)
 	GetRecord(context.Context, *RecordQuery) (*Data, error)
@@ -295,7 +295,7 @@ func (UnimplementedDbServer) GetLatestRecord(context.Context, *RecordQuery) (*Da
 func (UnimplementedDbServer) ObjectFieldExists(context.Context, *FieldData) (*Bool, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ObjectFieldExists not implemented")
 }
-func (UnimplementedDbServer) GetFields(context.Context, *String) (*Data, error) {
+func (UnimplementedDbServer) GetFields(context.Context, *String) (*Fields, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetFields not implemented")
 }
 func (UnimplementedDbServer) CreateRecord(context.Context, *CreateRecordParam) (*Data, error) {

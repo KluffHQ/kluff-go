@@ -35,7 +35,7 @@ func buildContext(c *gin.Context) (*Context, error) {
 	}
 	return &Context{
 		Context: c,
-		SDK:     sdk,
+		Inter:   sdk,
 	}, nil
 }
 

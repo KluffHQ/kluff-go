@@ -5,20 +5,17 @@ import (
 	"log"
 
 	"github.com/kluff-com/kluff-go"
-	"github.com/kluff-com/kluff-go/db"
 )
 
 func main() {
 	r := kluff.NewRouter()
 	r.GET("/logs", func(c *kluff.Context) {
-		data, err := c.SDK.Object("tab_fields").GetRecords(&db.RecordQuery{
-			Limit: 10,
-		})
+		data, err := c.Inter.Object("page_layout").GetFields()
 		if err != nil {
 			c.JSON(500, err.Error())
 			return
 		}
-		c.JSON(200, data.Result())
+		c.JSON(200, data)
 	})
 
 	r.RegisterAction(kluff.Action{

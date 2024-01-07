@@ -10,7 +10,7 @@ const _sdkKey = "kluff_sdk"
 
 type Context struct {
 	*gin.Context
-	SDK *Interactor
+	Inter *Interactor
 }
 
 type ApiError struct {
