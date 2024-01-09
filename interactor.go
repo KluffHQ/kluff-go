@@ -48,6 +48,14 @@ func (i *Interactor) NewObject(obj *db.Object) *Object {
 	}
 }
 
+func (i *Interactor) NewRecord(objectName string, data map[string]any) *Record {
+	return &Record{
+		cl:     i.cl,
+		Object: objectName,
+		Data:   data,
+	}
+}
+
 func (i *Interactor) SendPing(context context.Context, ping *db.Ping) error {
 	_, err := i.cl.SendPing(context, ping)
 	return err
