@@ -22,10 +22,8 @@ type meta struct {
 }
 
 type Router struct {
-	engine  *gin.Engine
-	api     *gin.RouterGroup
-	action  *gin.RouterGroup
-	trigger *gin.RouterGroup
+	engine *gin.Engine
+	api    *gin.RouterGroup
 
 	// this is used to keep track of all metadata
 	meta meta
@@ -44,10 +42,8 @@ func NewRouter() *Router {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	return &Router{
-		engine:  engine,
-		api:     engine.Group(apiPath, requestValidator()),
-		action:  engine.Group(actionPath, requestValidator()),
-		trigger: engine.Group(triggerPath, requestValidator()),
+		engine: engine,
+		api:    engine.Group(apiPath, requestValidator()),
 		meta: meta{
 			Actions:  map[string]actionMeta{},
 			Triggers: map[string]triggerMeta{},
@@ -154,7 +150,7 @@ func (r *Router) handleAction(a Action) error {
 		ID:     parseID(a.ID),
 	}
 	r.meta.Actions[parseID(a.ID)] = meta
-	r.action.POST(fmt.Sprintf("/%s", parseID(a.ID)), func(ctx *gin.Context) {
+	r.engine.POST(a.getRoute(), func(ctx *gin.Context) {
 		sdk, err := parseSdk(ctx)
 		if err != nil {
 			ctx.JSON(500, gin.H{"error": err.Error()})
@@ -207,6 +203,11 @@ type triggerMeta struct {
 	Route  string
 }
 
+/*
+Kluff Trigger
+
+The id of of the trigger must be unique in every version of this api
+*/
 type Trigger struct {
 	ID      string
 	Action  TriggerAction
@@ -221,6 +222,9 @@ func (t Trigger) getRoute() string {
 func (t Trigger) validate() error {
 	if t.ID == "" {
 		return errors.New("trigger ID required")
+	}
+	if t.Object == "" {
+		return errors.New("trigger object required")
 	}
 	if t.Action == ON_CREATE || t.Action == ON_DELETE || t.Action == ON_UPDATE {
 		return nil
@@ -243,7 +247,7 @@ func (r *Router) RegisterTrigger(trigger Trigger) {
 		Route:  trigger.getRoute(),
 	}
 	r.meta.Triggers[id] = meta
-	r.trigger.POST(id, func(ctx *gin.Context) {
+	r.engine.POST(trigger.getRoute(), func(ctx *gin.Context) {
 		sdk, err := parseSdk(ctx)
 		if err != nil {
 			ctx.AbortWithStatus(http.StatusUnauthorized)

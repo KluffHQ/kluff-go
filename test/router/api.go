@@ -38,6 +38,16 @@ func main() {
 
 	r.RegisterTrigger(kluff.Trigger{
 		ID:     "new_id",
+		Object: "lead",
+		Action: kluff.ON_CREATE,
+		Handler: func(i *kluff.Context, m map[string]any) error {
+			return nil
+		},
+	})
+
+	r.RegisterTrigger(kluff.Trigger{
+		ID:     "trigger 2",
+		Object: "lead",
 		Action: kluff.ON_CREATE,
 		Handler: func(i *kluff.Context, m map[string]any) error {
 			return nil
