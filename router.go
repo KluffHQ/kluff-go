@@ -5,53 +5,55 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 )
 
-type ActionMeta struct {
+type actionMeta struct {
 	Route  string `json:"route"`
+	Name   string `json:"name"`
 	Object string `json:"object"`
 	ID     string `json:"id"`
 }
 
-type BathMeta struct {
+type meta struct {
+	Actions  map[string]actionMeta  `json:"actions"`
+	Triggers map[string]triggerMeta `json:"triggers"`
 }
 
 type Router struct {
 	engine *gin.Engine
 	api    *gin.RouterGroup
-	action *gin.RouterGroup
 
 	// this is used to keep track of all metadata
-	actions map[string]ActionMeta
+	meta meta
 }
 
 type APIHandler func(*Context)
 
 const (
-	apiPath    = "/api"
-	actionPath = "/action"
-	metaPath   = "/_meta"
+	apiPath     = "/api"
+	actionPath  = "/action"
+	triggerPath = "/trigger"
+	metaPath    = "/_meta"
 )
 
 func NewRouter() *Router {
 	engine := gin.New()
 	engine.Use(gin.Recovery())
 	return &Router{
-		engine:  engine,
-		api:     engine.Group(apiPath, requestValidator()),
-		action:  engine.Group(actionPath, requestValidator()),
-		actions: map[string]ActionMeta{},
+		engine: engine,
+		api:    engine.Group(apiPath, requestValidator()),
+		meta: meta{
+			Actions:  map[string]actionMeta{},
+			Triggers: map[string]triggerMeta{},
+		},
 	}
 }
 
 func (r *Router) Start() error {
 	r.engine.GET(metaPath, func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"actions": r.actions,
-		})
+		ctx.JSON(200, r.meta)
 	})
 	return r.engine.Run(":3000")
 }
@@ -136,22 +138,19 @@ func (a Action) validate() error {
 	return nil
 }
 
-func (a Action) parseID() string {
-	return strings.ReplaceAll(strings.ToLower(a.ID), " ", "")
-}
-
 func (a Action) getRoute() string {
-	return fmt.Sprintf("%s/%s", actionPath, a.parseID())
+	return fmt.Sprintf("%s/%s", actionPath, parseID(a.ID))
 }
 
 func (r *Router) handleAction(a Action) error {
-	meta := ActionMeta{
+	meta := actionMeta{
 		Route:  a.getRoute(),
 		Object: a.Object,
-		ID:     a.parseID(),
+		Name:   a.Name,
+		ID:     parseID(a.ID),
 	}
-	r.actions[a.parseID()] = meta
-	r.action.POST(fmt.Sprintf("/%s", a.parseID()), func(ctx *gin.Context) {
+	r.meta.Actions[parseID(a.ID)] = meta
+	r.engine.POST(a.getRoute(), func(ctx *gin.Context) {
 		sdk, err := parseSdk(ctx)
 		if err != nil {
 			ctx.JSON(500, gin.H{"error": err.Error()})
@@ -177,9 +176,92 @@ func (r *Router) RegisterAction(a Action) error {
 	if err := a.validate(); err != nil {
 		log.Fatalf("%s while creating action [%s]", err.Error(), a.Name)
 	}
-	_, ok := r.actions[a.parseID()]
+	_, ok := r.meta.Actions[parseID(a.ID)]
 	if ok {
 		log.Fatalf("duplicate action id [%s]", a.ID)
 	}
 	return r.handleAction(a)
+}
+
+/* ================================================
+*  Triggers
+* ================================================== */
+
+type TriggerAction string
+
+const (
+	ON_CREATE TriggerAction = "ON_SAVE"
+	ON_UPDATE TriggerAction = "ON_UPDATE"
+	ON_DELETE TriggerAction = "ON_DELETE"
+)
+
+type TriggerHandler func(ctx *Context, data map[string]any) error
+
+type triggerMeta struct {
+	Object string
+	Type   TriggerAction
+	Route  string
+}
+
+/*
+Kluff Trigger
+
+The id of of the trigger must be unique in every version of this api
+*/
+type Trigger struct {
+	ID      string
+	Action  TriggerAction
+	Object  string
+	Handler TriggerHandler
+}
+
+func (t Trigger) getRoute() string {
+	return fmt.Sprintf("%s/%s", triggerPath, parseID(t.ID))
+}
+
+func (t Trigger) validate() error {
+	if t.ID == "" {
+		return errors.New("trigger ID required")
+	}
+	if t.Object == "" {
+		return errors.New("trigger object required")
+	}
+	if t.Action == ON_CREATE || t.Action == ON_DELETE || t.Action == ON_UPDATE {
+		return nil
+	}
+	return errors.New("invalid trigger action")
+}
+
+func (r *Router) RegisterTrigger(trigger Trigger) {
+	if err := trigger.validate(); err != nil {
+		log.Fatal(err)
+	}
+	id := parseID(trigger.ID)
+	_, ok := r.meta.Triggers[id]
+	if ok {
+		log.Fatal("failed to register multiple trigger with the same id")
+	}
+	meta := triggerMeta{
+		Object: trigger.Object,
+		Type:   trigger.Action,
+		Route:  trigger.getRoute(),
+	}
+	r.meta.Triggers[id] = meta
+	r.engine.POST(trigger.getRoute(), func(ctx *gin.Context) {
+		sdk, err := parseSdk(ctx)
+		if err != nil {
+			ctx.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+		var data map[string]any
+		if err := ctx.BindJSON(&data); err != nil {
+			ctx.AbortWithStatusJSON(http.StatusInternalServerError, err)
+			return
+		}
+		context := &Context{
+			Context: ctx,
+			Inter:   sdk,
+		}
+		trigger.Handler(context, data)
+	})
 }

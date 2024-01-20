@@ -1,8 +1,11 @@
 package kluff
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"errors"
 	"net/http"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -49,4 +52,9 @@ func requestValidator() gin.HandlerFunc {
 		ctx.Set(_sdkKey, sdk)
 		ctx.Next()
 	}
+}
+
+func parseID(id string) string {
+	hash := md5.Sum([]byte(strings.ToLower(id)))
+	return hex.EncodeToString(hash[:])
 }
