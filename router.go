@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -55,7 +56,11 @@ func (r *Router) Start() error {
 	r.engine.GET(metaPath, func(ctx *gin.Context) {
 		ctx.JSON(200, r.meta)
 	})
-	return r.engine.Run(":3000")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "5000"
+	}
+	return r.engine.Run(fmt.Sprintf(":%s", port))
 }
 
 /*
