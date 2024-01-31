@@ -144,6 +144,50 @@ func (o *Object) GetLatestRecord(q *db.RecordQuery) (*Record, error) {
 	return newRecord(o.cl, o.Base.Name, m), nil
 }
 
+func (o *Object) GetSingleRecord(q *db.RecordQuery) (*Record, error) {
+	data, err := o.cl.GetSingleRecord(context.Background(), q)
+	if err != nil {
+		return nil, err
+	}
+	m, err := data.ParseMap()
+	if err != nil {
+		return nil, err
+	}
+	return newRecord(o.cl, o.Base.Name, m), nil
+}
+
+func (o *Object) CreateSingleRecord(q *db.SingleObject) (*db.SingleObject, error) {
+	data, err := o.cl.CreateSingleObjectRecord(context.Background(), q)
+	if err != nil {
+		return nil, err
+	}
+	return data, nil
+}
+
+func (o *Object) ExcuteRawSql(q *db.String) (*Record, error) {
+	data, err := o.cl.ExcuteRaw(context.Background(), q)
+	if err != nil {
+		return nil, err
+	}
+	m, err := data.ParseMap()
+	if err != nil {
+		return nil, err
+	}
+	return newRecord(o.cl, o.Base.Name, m), nil
+}
+
+func (o *Object) ExcuteSoql(q *db.String) (*Record, error) {
+	data, err := o.cl.ExcuteSoql(context.Background(), q)
+	if err != nil {
+		return nil, err
+	}
+	m, err := data.ParseMap()
+	if err != nil {
+		return nil, err
+	}
+	return newRecord(o.cl, o.Base.Name, m), nil
+}
+
 func (o *Object) GetFields() ([]*db.Field, error) {
 	data, err := o.cl.GetFields(context.Background(), &db.String{Value: o.Base.Name})
 	return data.Fields, err
