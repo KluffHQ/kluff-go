@@ -69,6 +69,10 @@ func (i *Interactor) GetObjects(context context.Context, q *db.ObjectQuery) ([]m
 	return data.ParseMapSlice()
 }
 
+func (i *Interactor) GetSession(context Context) (*db.Session, error) {
+	return i.cl.GetSession(context, &db.Empty{})
+}
+
 /*
 Object Methods
 */
@@ -164,20 +168,24 @@ func (o *Object) CreateSingleRecord(q *db.SingleObject) (*db.SingleObject, error
 	return data, nil
 }
 
-func (o *Object) ExcuteRawSql(q *db.String) (*Record, error) {
-	data, err := o.cl.ExcuteRaw(context.Background(), q)
+func (i *Interactor) ExecuteRawSql(q string, variables ...any) ([]map[string]any, error) {
+	b, err := json.Marshal(&variables)
 	if err != nil {
 		return nil, err
 	}
-	m, err := data.ParseMap()
+	data, err := i.cl.ExecuteRaw(context.Background(), &db.SqlQuery{
+		Query:     q,
+		Variables: b,
+	})
 	if err != nil {
 		return nil, err
 	}
-	return newRecord(o.cl, o.Base.Name, m), nil
+	return data.ParseMapSlice()
+
 }
 
-func (o *Object) ExcuteSoql(q *db.String) (*Record, error) {
-	data, err := o.cl.ExcuteSoql(context.Background(), q)
+func (o *Object) ExecuteSoql(q *db.String) (*Record, error) {
+	data, err := o.cl.ExecuteSoql(context.Background(), q)
 	if err != nil {
 		return nil, err
 	}

@@ -7,7 +7,7 @@ import (
 	"github.com/kluff-com/kluff-go/db"
 )
 
-const testToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOnsic2NoZW1hIjoicHVibGljIn0sInR5cGUiOiJhdXRoZW50aWNhdGlvbiIsImlkIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwidXNlcl9pZCI6MSwib3JnYW5pemF0aW9uX2lkIjoxLCJhcHBfdG9rZW4iOnRydWUsImlzc3VlZF9hdCI6IjIwMjQtMDEtMDZUMDA6MjQ6MzIuNzY4NjE5WiIsImV4cGlyZWRfYXQiOiIyMDI0LTAxLTA2VDA4OjI0OjMyLjc2ODYxOVoifQ.D3NTpBHGm80w5OEmN3oHkD5VO8aXdsQOMUE27t6nJpM"
+const testToken = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbnYiOnsic2NoZW1hIjoicHVibGljIn0sInR5cGUiOiJhdXRoZW50aWNhdGlvbiIsImlkIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwidXNlcl9pZCI6MSwib3JnYW5pemF0aW9uX2lkIjoxLCJhcHBfdG9rZW4iOnRydWUsImlzc3VlZF9hdCI6IjIwMjQtMDItMDdUMjE6MTc6NTUuNzQyMTM4WiIsImV4cGlyZWRfYXQiOiIyMDI0LTAyLTEwVDIxOjE3OjU1Ljc0MjEzOFoifQ.yFiVnN9IQlg4shcT-0CyI-HE5D9vyUx1Azs4o7VDSXc"
 
 func TestMethods(t *testing.T) {
 	inter, err := kluff.Get(testToken)
@@ -145,4 +145,16 @@ func TestMethods(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
+}
+
+func TestRawQuery(t *testing.T) {
+	inter, err := kluff.Get(testToken)
+	if err != nil {
+		t.Fatal(err)
+	}
+	data, err := inter.ExecuteRawSql("select * from tab_objects limit ?", 5)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(data)
 }

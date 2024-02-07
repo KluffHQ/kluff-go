@@ -18,10 +18,9 @@ func authInterceptor(token string) grpc.UnaryClientInterceptor {
 }
 
 func Get(token string) (*Interactor, error) {
-	tk := token[len("Bearer "):]
 	conn, err := grpc.Dial("localhost:9091",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		grpc.WithUnaryInterceptor(authInterceptor(tk)),
+		grpc.WithUnaryInterceptor(authInterceptor(token)),
 	)
 	if err != nil {
 		return nil, err
