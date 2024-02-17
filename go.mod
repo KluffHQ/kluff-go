@@ -1,4 +1,4 @@
-module github.com/kluff-com/kluff-go
+module github.com/kluffHQ/kluff-go
 
 go 1.19
 
