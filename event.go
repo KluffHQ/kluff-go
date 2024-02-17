@@ -3,7 +3,6 @@ package kluff
 import (
 	"encoding/json"
 	"errors"
-	"net/http"
 )
 
 type EventType string
@@ -13,73 +12,45 @@ const (
 	ACTION  EventType = "ACTION"
 )
 
-type TriggerType string
-
-const (
-	BEFORE_CREATE TriggerType = "BEFORE_CREATE"
-	AFTER_CREATE  TriggerType = "AFTER_CREATE"
-	BEFORE_UPDATE TriggerType = "BEFORE_UPDATE"
-	AFTER_UPDATE  TriggerType = "AFTER_UPDATE"
-	BEFORE_DELETE TriggerType = "BEFORE_DELETE"
-	AFTER_DELETE  TriggerType = "AFTER_DELETE"
+var (
+	ErrInvalidRequest = errors.New("invalid request")
 )
 
-type EventRequest struct {
-	*http.Request
-	Type EventType
-	Data json.RawMessage
-}
-
-type TriggerData struct {
-	Type    TriggerType    `json:"type"`
-	OldData map[string]any `json:"old"`
-	Data    map[string]any `json:"data"`
-}
-
 type Event struct {
-	Request *EventRequest
-	w       http.ResponseWriter
+	Data  json.RawMessage `json:"data"`
+	Type  string          `json:"type"`
+	Token string          `json:"token"` // used to authenticate the DB interactor
 }
 
-func ParseEvent(w http.ResponseWriter, r *http.Request) (*Event, error) {
-	req := struct {
-		Type EventType       `json:"type"`
-		Data json.RawMessage `json:"data"`
-	}{}
-
-	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+// used parse an event from bytes
+func ParseEvent(data []byte) (*Event, error) {
+	var evt Event
+	if err := json.Unmarshal(data, &evt); err != nil {
 		return nil, err
 	}
-
-	return &Event{
-		Request: &EventRequest{
-			Request: r,
-			Type:    req.Type,
-			Data:    req.Data,
-		},
-		w: w,
-	}, nil
+	return &evt, nil
 }
 
-func (e *Event) Log(value any) {
-	//TODO: impl loging
-}
-
+// the the kluff Interactor
 func (e *Event) GetInteractor() (*Interactor, error) {
-	token := e.Request.Header.Get("authorization")
-	if token == "" {
-		return nil, errors.New("invalid token")
-	}
-	return Get(token)
+	return Get(e.Token)
 }
 
-func (e *Event) ParseTriggerData() (*TriggerData, error) {
-	if e.Request.Type != TRIGGER {
-		return nil, errors.New("invalid request type")
+// this is only valid when the request is coming from the a trigger
+// returns an error is the request is coming from other thing else
+func (e *Event) ParseTrigger() (*Trigger, error) {
+	if e.Type != string(TRIGGER) {
+		return nil, ErrInvalidRequest
 	}
-	var data TriggerData
-	if err := json.Unmarshal(e.Request.Data, &data); err != nil {
+	return ParseTrigger(e.Data)
+}
+
+// parse the data from the action info `map[string]any`
+// this return an error if the data does not conform to the `map[string]any`
+func (e *Event) ParseMapData() (map[string]any, error) {
+	var data map[string]any
+	if err := json.Unmarshal(e.Data, &data); err != nil {
 		return nil, err
 	}
-	return &data, nil
+	return data, nil
 }

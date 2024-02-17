@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/kluff-com/kluff-go/db"
+	"github.com/kluffHQ/kluff-go/db"
 	"google.golang.org/grpc"
 )
 
@@ -69,7 +69,7 @@ func (i *Interactor) GetObjects(context context.Context, q *db.ObjectQuery) ([]m
 	return data.ParseMapSlice()
 }
 
-func (i *Interactor) GetSession(context Context) (*db.Session, error) {
+func (i *Interactor) GetSession(context context.Context) (*db.Session, error) {
 	return i.cl.GetSession(context, &db.Empty{})
 }
 
