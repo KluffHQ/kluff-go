@@ -241,11 +241,6 @@ func (o *Object) UpdateMeta(obj *db.BaseObject) error {
 	return err
 }
 
-func (o *Object) GetRelatedFields() ([]*db.Field, error) {
-	f, err := o.cl.GetRelatedFields(context.Background(), &db.String{Value: o.Base.Name})
-	return f.Fields, err
-}
-
 func (o *Object) Exists() (bool, error) {
 	v, err := o.cl.ObjectExists(context.Background(), &db.String{Value: o.Base.Name})
 	if err != nil {
@@ -353,6 +348,35 @@ func (r *Record) parseAllData() ([]byte, error) {
 	return json.Marshal(update)
 }
 
+/*
+Appends child record to the parent
+
+Note: the fieldName has to have a parent-to-child relation with the main record
+*/
+func (r *Record) AppendChild(fieldName string, data []map[string]any) error {
+	existingData := make([]map[string]any, 0)
+	existing, ok := r.Data[fieldName]
+	if !ok {
+		r.Data[fieldName] = make([]map[string]any, 0)
+	} else {
+		single, ok := existing.(map[string]any)
+		if ok {
+			existingData = append(existingData, single)
+		} else {
+			mult, ok := existing.([]map[string]any)
+			if ok {
+				existingData = append(existingData, mult...)
+			}
+		}
+	}
+
+	if existingData != nil {
+		data = append(data, existingData...)
+	}
+	r.Data[fieldName] = data
+	return nil
+}
+
 func (r *Record) Get(field string) (any, error) {
 	// if the value is not found in the updates get the read data
 	d, ok := r._updates[field]
@@ -387,6 +411,7 @@ func (r *Record) Create() error {
 	if err != nil {
 		return err
 	}
+
 	data, err := r.cl.CreateRecord(context.Background(), &db.CreateRecordParam{
 		ObjectName: r.Object,
 		Fields:     fields,
