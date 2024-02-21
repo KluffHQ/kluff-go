@@ -29,7 +29,6 @@ const (
 	Db_UpdateObjectField_FullMethodName        = "/db.db/UpdateObjectField"
 	Db_GetObjectSchema_FullMethodName          = "/db.db/GetObjectSchema"
 	Db_ObjectExists_FullMethodName             = "/db.db/ObjectExists"
-	Db_GetRelatedFields_FullMethodName         = "/db.db/GetRelatedFields"
 	Db_GetLatestRecord_FullMethodName          = "/db.db/GetLatestRecord"
 	Db_ObjectFieldExists_FullMethodName        = "/db.db/ObjectFieldExists"
 	Db_GetFields_FullMethodName                = "/db.db/GetFields"
@@ -60,7 +59,6 @@ type DbClient interface {
 	UpdateObjectField(ctx context.Context, in *UpdateField, opts ...grpc.CallOption) (*Empty, error)
 	GetObjectSchema(ctx context.Context, in *String, opts ...grpc.CallOption) (*BaseObject, error)
 	ObjectExists(ctx context.Context, in *String, opts ...grpc.CallOption) (*Bool, error)
-	GetRelatedFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Fields, error)
 	GetLatestRecord(ctx context.Context, in *RecordQuery, opts ...grpc.CallOption) (*Data, error)
 	ObjectFieldExists(ctx context.Context, in *FieldData, opts ...grpc.CallOption) (*Bool, error)
 	GetFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Fields, error)
@@ -171,15 +169,6 @@ func (c *dbClient) GetObjectSchema(ctx context.Context, in *String, opts ...grpc
 func (c *dbClient) ObjectExists(ctx context.Context, in *String, opts ...grpc.CallOption) (*Bool, error) {
 	out := new(Bool)
 	err := c.cc.Invoke(ctx, Db_ObjectExists_FullMethodName, in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *dbClient) GetRelatedFields(ctx context.Context, in *String, opts ...grpc.CallOption) (*Fields, error) {
-	out := new(Fields)
-	err := c.cc.Invoke(ctx, Db_GetRelatedFields_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +307,6 @@ type DbServer interface {
 	UpdateObjectField(context.Context, *UpdateField) (*Empty, error)
 	GetObjectSchema(context.Context, *String) (*BaseObject, error)
 	ObjectExists(context.Context, *String) (*Bool, error)
-	GetRelatedFields(context.Context, *String) (*Fields, error)
 	GetLatestRecord(context.Context, *RecordQuery) (*Data, error)
 	ObjectFieldExists(context.Context, *FieldData) (*Bool, error)
 	GetFields(context.Context, *String) (*Fields, error)
@@ -371,9 +359,6 @@ func (UnimplementedDbServer) GetObjectSchema(context.Context, *String) (*BaseObj
 }
 func (UnimplementedDbServer) ObjectExists(context.Context, *String) (*Bool, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ObjectExists not implemented")
-}
-func (UnimplementedDbServer) GetRelatedFields(context.Context, *String) (*Fields, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetRelatedFields not implemented")
 }
 func (UnimplementedDbServer) GetLatestRecord(context.Context, *RecordQuery) (*Data, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetLatestRecord not implemented")
@@ -603,24 +588,6 @@ func _Db_ObjectExists_Handler(srv interface{}, ctx context.Context, dec func(int
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(DbServer).ObjectExists(ctx, req.(*String))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Db_GetRelatedFields_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(String)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(DbServer).GetRelatedFields(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: Db_GetRelatedFields_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DbServer).GetRelatedFields(ctx, req.(*String))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -905,10 +872,6 @@ var Db_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ObjectExists",
 			Handler:    _Db_ObjectExists_Handler,
-		},
-		{
-			MethodName: "GetRelatedFields",
-			Handler:    _Db_GetRelatedFields_Handler,
 		},
 		{
 			MethodName: "GetLatestRecord",
