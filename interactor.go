@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 
-	"github.com/kluffHQ/kluff-go/db"
+	"github.com/KluffHQ/kluff-go/db"
 	"google.golang.org/grpc"
 )
 

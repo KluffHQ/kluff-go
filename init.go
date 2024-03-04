@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/kluffHQ/kluff-go/db"
+	"github.com/KluffHQ/kluff-go/db"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
