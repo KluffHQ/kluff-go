@@ -2,6 +2,7 @@ package kluff
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/kluffHQ/kluff-go/db"
 	"google.golang.org/grpc"
@@ -23,7 +24,7 @@ func Get(token string) (*Interactor, error) {
 		grpc.WithUnaryInterceptor(authInterceptor(token)),
 	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("faild to connect to apps core: error: %v", err)
 	}
 	client := NewDBInteractor(conn)
 	// Send Ping to the server to check if everything is working fine
