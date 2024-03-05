@@ -19,7 +19,7 @@ func authInterceptor(token string) grpc.UnaryClientInterceptor {
 }
 
 func Get(token string) (*Interactor, error) {
-	conn, err := grpc.Dial("localhost:9091",
+	conn, err := grpc.Dial("kluff_apps_core:9091",
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithUnaryInterceptor(authInterceptor(token)),
 	)
